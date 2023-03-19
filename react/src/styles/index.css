@@ -12,3 +12,7 @@ ul {
 a {
   cursor: pointer;
 }
+
+input {
+  all: unset;
+}
