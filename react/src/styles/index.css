@@ -25,3 +25,11 @@ input:focus {
 input {
   all: unset;
 }
+
+body {
+  padding: 50px;
+}
+
+h2 {
+  margin: 0px;
+}
