@@ -13,6 +13,15 @@ a {
   cursor: pointer;
 }
 
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+*:focus {
+  outline: none;
+}
+
 input {
   all: unset;
 }

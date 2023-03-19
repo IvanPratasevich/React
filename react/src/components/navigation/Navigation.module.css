@@ -6,6 +6,9 @@
 }
 
 .nav__el {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-style: normal;
   font-weight: 600;
   font-size: 19px;
@@ -13,9 +16,15 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 8px 16px;
+  transition: all 1s ease-out;
+  cursor: pointer;
 }
 
 .nav__el_active {
   color: #02d7f2;
   background: #010101;
+}
+
+.nav__el:hover {
+  color: white;
 }
