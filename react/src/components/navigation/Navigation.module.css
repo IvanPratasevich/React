@@ -1,0 +1,21 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  max-width: 20%;
+  border-bottom: 2px solid #010101;
+}
+
+.nav__el {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+}
+
+.nav__el_active {
+  color: #02d7f2;
+  background: #010101;
+}

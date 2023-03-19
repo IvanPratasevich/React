@@ -1,0 +1,14 @@
+:root {
+  background-color: #ffee08;
+  font-family: 'Chakra Petch';
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+a {
+  cursor: pointer;
+}
