@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './SearchBar.module.css';
 
-class SearchBar extends React.Component<null, { inputValue: string }> {
-  constructor(props: null) {
+class SearchBar extends React.Component<unknown, { inputValue: string }> {
+  constructor(props: unknown) {
     super(props);
     let storageInputValue = localStorage.getItem('inputValue') || '';
     if (storageInputValue) {
