@@ -4,12 +4,12 @@ import styles from './Navigation.module.css';
 const Navigation = () => {
   return (
     <ul className={styles.nav}>
-      <li className={`${styles.nav__el} ${styles.nav__el_active}`}>
-        <a>Home</a>
-      </li>
-      <li className={styles.nav__el}>
-        <a>About us</a>
-      </li>
+      <a href="/">
+        <li className={`${styles.nav__el} ${styles.nav__el_active}`}>Home</li>
+      </a>
+      <a href="/about-us">
+        <li className={styles.nav__el}>About us</li>
+      </a>
     </ul>
   );
 };

@@ -33,3 +33,8 @@ body {
 h2 {
   margin: 0px;
 }
+
+a,
+button {
+  all: unset;
+}

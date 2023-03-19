@@ -4,11 +4,18 @@ import Home from './components/screens/home/Home';
 import './styles/index.css';
 import './styles/normalize.css';
 import './styles/fonts.css';
-import Main from './components/main/Main';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NotFound from './components/404/404';
+import AboutUs from './components/about-us/AboutUs';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Home />
-    <Main />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/about-us" element={<AboutUs />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
