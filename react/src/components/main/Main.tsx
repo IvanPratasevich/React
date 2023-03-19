@@ -2,7 +2,7 @@ import Card from '../card/Card';
 import React from 'react';
 import styles from './Main.module.css';
 import database from '../../database/database';
-import ICharacter from 'interfaces/interfaces';
+import ICharacter from '../../interfaces/interfaces';
 
 const Main = () => {
   return (
