@@ -31,24 +31,14 @@ describe('Testing navigation', () => {
     );
   });
 
-  beforeEach(() => {
-    window.location = { ...window.location, href: '' };
-  });
-
   test('Inferring the element and checking the link', () => {
-    const linkToHomePage = screen.getByTestId('home');
-    expect(linkToHomePage).toBeVisible();
-    expect(linkToHomePage).toHaveAttribute('href', '/');
-  });
-
-  test('Inferring the element and checking the link', () => {
-    const linkToHomePage = screen.getByTestId('home');
+    const linkToHomePage: HTMLElement = screen.getByTestId('home');
     expect(linkToHomePage).toBeVisible();
     expect(linkToHomePage).toHaveAttribute('href', '/');
   });
 
   test('Should go to the Home page', () => {
-    const linkToHomePage = screen.getByTestId('home');
+    const linkToHomePage: HTMLElement = screen.getByTestId('home');
     linkToHomePage.click();
     expect(location.pathname).toEqual('/');
   });
