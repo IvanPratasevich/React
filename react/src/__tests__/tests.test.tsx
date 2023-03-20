@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import NotFound from '../components/404/404';
 import AboutUs from '../components/about-us/AboutUs';
 import Home from '../components/screens/home/Home';
@@ -41,7 +41,9 @@ describe('Testing navigation', () => {
 
   test('Should go to the Home page', () => {
     const linkToHomePage: HTMLElement = screen.getByTestId('home');
-    linkToHomePage.click();
+    act(() => {
+      linkToHomePage.click();
+    });
     expect(location.pathname).toEqual('/');
   });
 });
