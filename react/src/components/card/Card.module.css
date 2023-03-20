@@ -11,7 +11,9 @@
 .card__decoration {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-bottom: 35px;
+  gap: 30px;
 }
 
 .card__arrow {

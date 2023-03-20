@@ -21,10 +21,14 @@
 }
 
 .nav__el_active {
-  color: #02d7f2;
+  color: white;
   background: #010101;
 }
 
 .nav__el:hover {
-  color: white;
+  color: #02d7f2;
+}
+
+.nav__el_invisible {
+  display: none;
 }

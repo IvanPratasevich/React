@@ -1,5 +1,12 @@
 .main {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 50px;
+}
+
+.container {
+  display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 30px;
