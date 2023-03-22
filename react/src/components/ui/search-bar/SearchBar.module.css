@@ -1,0 +1,23 @@
+.searchbar {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: flex-start;
+  width: 40%;
+  padding: 1.1em;
+  background: #001417;
+  border: 5px solid #ffffff;
+  border-radius: 5px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.2em;
+  line-height: 20px;
+  color: #ffffff;
+  transition: all 1s ease-out;
+}
+
+.searchbar:focus {
+  background: #002a30;
+  border-color: #02d7f2;
+  box-shadow: 0 0 10px 0 #fff, 0 0 20px 0 #02d7f2;
+}
