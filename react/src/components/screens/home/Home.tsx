@@ -1,12 +1,6 @@
 import React from 'react';
-import Main from '../../main/Main';
+import Main from '../../../structure/main/Main';
 
-const Home = () => {
-  return (
-    <>
-      <Main />
-    </>
-  );
-};
+const Home = () => <Main />;
 
 export default Home;

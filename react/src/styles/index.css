@@ -38,3 +38,8 @@ a,
 button {
   all: unset;
 }
+
+#root {
+  max-width: 1750px;
+  margin: 0 auto;
+}

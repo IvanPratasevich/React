@@ -1,6 +1,6 @@
-import ICharacter from '../interfaces/interfaces';
-
 // Source: https://www.ranker.com/list/cyberpunk-2077-characters/jonathan-kantor
+
+import { ICharacter } from '../models/interfaces';
 
 const database: ICharacter[] = [
   {

@@ -1,18 +1,17 @@
 .card {
-  padding-top: 48px;
-  padding-right: 31px;
-  padding-bottom: 48px;
-  padding-left: 31px;
-  max-width: 328px;
+  display: inline-block;
+  border: 30px solid;
+  border-image: url('../../../assets/card-frame.svg');
+  border-image-slice: 30;
+  margin-bottom: 5em;
+  width: auto;
   background: #02d7f2;
-  border-top-left-radius: 25px;
 }
 
 .card__decoration {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-bottom: 35px;
   gap: 30px;
 }
 
@@ -26,7 +25,7 @@
 .card__date {
   font-style: normal;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 0.9em;
   line-height: 16px;
   text-align: right;
   letter-spacing: 0.2em;
@@ -37,14 +36,10 @@
   text-align: center;
   font-style: normal;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 1.6em;
   line-height: 31px;
   color: #010101;
   margin-bottom: 10px;
-}
-
-.card__img {
-  border-radius: 20px;
 }
 
 .card__information {
@@ -54,13 +49,22 @@
 }
 
 .card__datapiece {
+  display: block;
   font-family: 'Bai Jamjuree';
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  font-size: 1.2em;
 }
 
 .card__property {
   font-size: 20px;
   color: white;
+}
+
+.card__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
 }
