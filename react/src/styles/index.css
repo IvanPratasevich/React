@@ -22,16 +22,8 @@ input:focus {
   outline: none;
 }
 
-input {
-  all: unset;
-}
-
 body {
   padding: 50px;
-}
-
-h2 {
-  margin: 0px;
 }
 
 a,

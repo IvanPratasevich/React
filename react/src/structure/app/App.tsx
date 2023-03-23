@@ -4,7 +4,7 @@ import Header from '../header/Header';
 import Home from '../../components/screens/home/Home';
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Form from '../../components/screens/form/form';
+import Form from '../../components/screens/form/form-page';
 
 const App = () => {
   return (

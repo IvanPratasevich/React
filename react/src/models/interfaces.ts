@@ -23,4 +23,8 @@ interface IRoute {
   route: string;
 }
 
-export { ICharacter, ICardProps, IPathes, IRoute };
+interface IComponents {
+  [key: string]: React.ComponentType[];
+}
+
+export { ICharacter, ICardProps, IPathes, IRoute, IComponents };

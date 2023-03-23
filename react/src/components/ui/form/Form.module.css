@@ -1,0 +1,174 @@
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #010101;
+  border-radius: 5px;
+  padding: 48px;
+}
+
+.form__container {
+  display: flex;
+  max-width: 500px;
+  flex-direction: column;
+  padding: 48px;
+  gap: 48px;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 3px dashed #7b61ff;
+  border-radius: 5px;
+}
+
+.form__title {
+  color: #ffffff;
+  margin: 0px;
+  font-size: 2em;
+}
+
+.form__field {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+.form__label {
+  display: block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1em;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #02d7f2;
+}
+
+.form__input {
+  padding: 22px 16px;
+  background: #001417;
+  border: 2px solid #02d7f2;
+  font-family: 'Bai Jamjuree';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.2em;
+  line-height: 20px;
+  color: #cdcdcd;
+  transition: all 1s ease-out;
+}
+
+.form__input:focus {
+  border: 2px solid #ffffff;
+  background: #001417;
+}
+
+.form__select {
+  padding: 22px 16px;
+  appearance: none;
+  background: #001417;
+  border: 2px solid #02d7f2;
+  font-family: 'Bai Jamjuree';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.2em;
+  line-height: 20px;
+  color: #cdcdcd;
+  transition: 1s ease-out;
+  transition-property: color, border;
+  background-image: url('../../../assets/arrow-down.svg');
+  background-position: calc(100% - 1em) center;
+  appearance: none;
+  background-repeat: no-repeat;
+}
+
+.form__select:focus {
+  border: 2px solid #ffffff;
+  background: #001417;
+  background-image: none;
+}
+
+.form__fieldRadio {
+  width: 15%;
+}
+
+.form__inputRadio {
+  width: 1em;
+  height: 1em;
+  padding: 22px 16px;
+  background: #001417;
+  border: 2px solid #02d7f2;
+  font-family: 'Bai Jamjuree';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.2em;
+  line-height: 20px;
+  color: #cdcdcd;
+  transition: all 1s ease-out;
+  accent-color: #02d7f2;
+}
+
+.form__labelRadio {
+  display: inline-block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1em;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #02d7f2;
+}
+
+.form__fieldRadio {
+  max-width: 195px;
+  min-width: 165px;
+  width: 100%;
+  border: 2px solid #02d7f2;
+  padding: 22px 16px;
+}
+
+.form__row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.form__agreement {
+  display: flex;
+  gap: 15px;
+}
+
+.form__inputCheckbox {
+  width: 1em;
+  height: 1em;
+  padding: 22px 16px;
+  background: #001417;
+  border: 2px solid #02d7f2;
+  font-family: 'Bai Jamjuree';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.2em;
+  line-height: 20px;
+  color: #cdcdcd;
+  transition: all 1s ease-out;
+  accent-color: #02d7f2;
+}
+
+.form__labelCheckbox {
+  display: inline-block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1em;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #02d7f2;
+}
+
+.form__fieldCheckbox {
+  max-width: 195px;
+  min-width: 165px;
+  width: 100%;
+  border: 2px solid #02d7f2;
+  padding: 22px 16px;
+}

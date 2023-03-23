@@ -280,4 +280,6 @@ const database: ICharacter[] = [
   },
 ];
 
-export default database;
+const occupations: string[] = [...new Set(database.map((el) => el.occupation))];
+
+export { database, occupations };
