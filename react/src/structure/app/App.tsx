@@ -4,6 +4,7 @@ import Header from '../header/Header';
 import Home from '../../components/screens/home/Home';
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import Form from '../../components/screens/form/form';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="*" element={<Navigate to="/404" />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/form" element={<Form />} />
       </Routes>
     </>
   );

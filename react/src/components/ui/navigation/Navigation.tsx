@@ -28,6 +28,7 @@ class Navigation extends React.Component<{ [key: string]: string }, { location: 
           >
             Home
           </NavLink>
+
           <NavLink
             className={({ isActive }) =>
               isActive ? `${styles.nav__el} ${styles.nav__el_active}` : `${styles.nav__el}`
@@ -48,6 +49,16 @@ class Navigation extends React.Component<{ [key: string]: string }, { location: 
             data-testid="404"
           >
             404
+          </NavLink>
+
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? `${styles.nav__el} ${styles.nav__el_active}` : `${styles.nav__el}`
+            }
+            to="/form"
+            data-testid="form"
+          >
+            Form
           </NavLink>
         </nav>
 
