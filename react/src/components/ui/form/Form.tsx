@@ -7,7 +7,7 @@ class Form extends React.Component {
   render = () => {
     return (
       <>
-        <form className={`${styles.form}`}>
+        <form className={`${styles.form}`} noValidate>
           <div className={`${styles.form__container}`}>
             <h1 className={`${styles.form__title}`}>Form</h1>
             <div className={`${styles.form__field}`}>
@@ -19,7 +19,7 @@ class Form extends React.Component {
                 className={`${styles.form__input}`}
                 type="text"
                 name="name"
-                required
+                defaultValue=""
               />
             </div>
 
@@ -32,7 +32,7 @@ class Form extends React.Component {
                 className={`${styles.form__input}`}
                 type="text"
                 name="description"
-                required
+                defaultValue=""
               />
             </div>
 
@@ -40,21 +40,27 @@ class Form extends React.Component {
               <label className={`${styles.form__label}`} htmlFor="name">
                 Birth date
               </label>
-              <input className={`${styles.form__input}`} type="text" name="birth-date" required />
+              <input
+                className={`${styles.form__input}`}
+                type="date"
+                defaultValue=""
+                name="birth-date"
+                lang="en"
+              />
             </div>
 
             <div className={`${styles.form__field}`}>
               <label className={`${styles.form__label}`} htmlFor="name">
                 Image
               </label>
-              <input className={`${styles.form__input}`} type="file" name="image" required />
+              <input className={`${styles.form__input}`} type="file" name="image" lang="en" />
             </div>
 
             <div className={`${styles.form__field}`}>
               <label className={`${styles.form__label}`} htmlFor="occupation">
                 Occupation
               </label>
-              <select className={`${styles.form__select}`} name="occupation" required>
+              <select className={`${styles.form__select}`} name="occupation" defaultValue="">
                 <option value="">Choose occupation</option>
                 {occupations.map((occupation: string) => {
                   return (
@@ -76,7 +82,7 @@ class Form extends React.Component {
                   className={`${styles.form__inputRadio}`}
                   type="radio"
                   name="gender"
-                  required
+                  defaultChecked={false}
                 />
                 <label className={`${styles.form__labelRadio}`} htmlFor="gender">
                   Male
@@ -87,7 +93,7 @@ class Form extends React.Component {
                   className={`${styles.form__inputRadio}`}
                   type="radio"
                   name="gender"
-                  required
+                  defaultChecked={false}
                 />
                 <label className={`${styles.form__labelRadio}`} htmlFor="gender">
                   Female
@@ -99,7 +105,7 @@ class Form extends React.Component {
                   className={`${styles.form__inputRadio}`}
                   type="radio"
                   name="gender"
-                  required
+                  defaultChecked={false}
                 />
                 <label className={`${styles.form__labelRadio}`} htmlFor="gender">
                   Non-binary
@@ -108,17 +114,13 @@ class Form extends React.Component {
             </div>
 
             <div className={`${styles.form__agreement}`}>
-              <input
-                className={`${styles.form__inputCheckbox}`}
-                type="checkbox"
-                name="agreement"
-                required
-              />
+              <input className={`${styles.form__inputCheckbox}`} type="checkbox" name="agreement" />
               <label className={`${styles.form__labelCheckbox}`} htmlFor="gender">
                 I agree that my personal data will be processed in the ways that correspond to the
                 purposes of the processing of personal data
               </label>
             </div>
+            <input className={`${styles.form__submitBtn}`} type="submit" value="Submit" />
           </div>
         </form>
       </>

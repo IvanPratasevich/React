@@ -82,12 +82,6 @@
   background-repeat: no-repeat;
 }
 
-.form__select:focus {
-  border: 2px solid #ffffff;
-  background: #001417;
-  background-image: none;
-}
-
 .form__fieldRadio {
   width: 15%;
 }
@@ -171,4 +165,30 @@
   width: 100%;
   border: 2px solid #02d7f2;
   padding: 22px 16px;
+}
+
+.form__submitBtn {
+  width: 100%;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.5em;
+  padding: 1em;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #02d7f2;
+  background: #010101;
+  outline: none;
+  border: 2px solid #cdcdcd;
+  transition: all 1s ease-out;
+}
+
+.form__input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.form__submitBtn:hover {
+  background: #cdcdcd;
+  cursor: pointer;
+  color: #010101;
 }
