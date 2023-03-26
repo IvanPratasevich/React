@@ -71,6 +71,12 @@ interface FormState {
   };
 }
 
+interface IValueWithRef {
+  male: string;
+  female: string;
+  'non-binary': string;
+}
+
 export {
   ICharacter,
   ICardProps,
@@ -80,4 +86,5 @@ export {
   GenderInputs,
   GenderLabels,
   FormState,
+  IValueWithRef,
 };

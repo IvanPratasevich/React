@@ -2,7 +2,7 @@ import { occupations } from '../../../database/database';
 import React from 'react';
 import styles from './Form.module.css';
 import { idGenerator } from '../../../utils/utils';
-import { GenderLabels, GenderInputs, FormState } from '../../../models/interfaces';
+import { GenderLabels, GenderInputs, FormState, IValueWithRef } from '../../../models/interfaces';
 
 class Form extends React.Component<Record<string, never>, FormState> {
   private inputName: React.RefObject<HTMLInputElement>;
@@ -15,7 +15,9 @@ class Form extends React.Component<Record<string, never>, FormState> {
   private inputGenderThird: React.RefObject<HTMLInputElement>;
   private inputCheckbox: React.RefObject<HTMLInputElement>;
   private options: GenderLabels;
+  private valueWithRef: IValueWithRef;
   private checkboxStates;
+  private cardsList: unknown;
 
   constructor(props: Record<string, never>) {
     super(props);
@@ -82,11 +84,19 @@ class Form extends React.Component<Record<string, never>, FormState> {
       'non-binary': this.inputGenderThird,
     };
 
+    this.valueWithRef = {
+      male: 'inputGenderFirst',
+      female: 'inputGenderSecond',
+      'non-binary': 'inputGenderThird',
+    };
+
     this.checkboxStates = {
       inputGenderFirst: false,
       inputGenderSecond: false,
       inputGenderThird: false,
     };
+
+    this.cardsList = [];
   }
 
   handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
@@ -172,20 +182,22 @@ class Form extends React.Component<Record<string, never>, FormState> {
       };
     }
 
+    this.checkboxStates.inputGenderFirst = false;
+    this.checkboxStates.inputGenderSecond = false;
+    this.checkboxStates.inputGenderThird = false;
+
     this.checkboxStates[
-      `${this.options[checkedGender.value as keyof GenderLabels]}` as keyof GenderInputs
+      `${this.valueWithRef[checkedGender.value as keyof GenderLabels]}` as keyof GenderInputs
     ] = true;
 
     return checkedGender
       ? {
           inputGender: {
-            value: '',
             error: null,
           },
         }
       : {
           inputGender: {
-            value: '',
             error: 'Please choose gender!',
           },
         };
@@ -361,6 +373,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
             <input className={`${styles.form__submitBtn}`} type="submit" value="Submit" />
           </div>
         </form>
+        <div className={`${styles.container}`}></div>
       </>
     );
   };

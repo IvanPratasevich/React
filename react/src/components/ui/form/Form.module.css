@@ -222,3 +222,23 @@
   width: 100%;
   gap: 16px;
 }
+
+.container {
+  width: 90%;
+  column-count: 3;
+  column-gap: 5em;
+}
+
+@media (max-width: 1700px) {
+  .container {
+    max-width: 1200px;
+    column-count: 2;
+  }
+}
+
+@media (max-width: 1198px) {
+  .container {
+    max-width: 600px;
+    column-count: 1;
+  }
+}
