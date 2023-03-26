@@ -27,4 +27,57 @@ interface IComponents {
   [key: string]: React.ComponentType[];
 }
 
-export { ICharacter, ICardProps, IPathes, IRoute, IComponents };
+interface GenderInputs {
+  inputGenderFirst: boolean;
+  inputGenderSecond: boolean;
+  inputGenderThird: boolean;
+}
+
+interface GenderLabels {
+  male: React.RefObject<HTMLInputElement>;
+  female: React.RefObject<HTMLInputElement>;
+  'non-binary': React.RefObject<HTMLInputElement>;
+}
+
+interface FormState {
+  inputName: {
+    error: string | null;
+  };
+  inputSurname: {
+    error: string | null;
+  };
+  inputDate: {
+    value: string;
+    error: string | null;
+  };
+  inputImage: {
+    value: string;
+    error: string | null;
+  };
+  selectOccupation: {
+    value: string;
+    error: string | null;
+  };
+  inputGender: {
+    error: string | null;
+  };
+  inputCheckbox: {
+    values: {
+      inputGenderFirst: boolean;
+      inputGenderSecond: boolean;
+      inputGenderThird: boolean;
+    };
+    error: string | null;
+  };
+}
+
+export {
+  ICharacter,
+  ICardProps,
+  IPathes,
+  IRoute,
+  IComponents,
+  GenderInputs,
+  GenderLabels,
+  FormState,
+};

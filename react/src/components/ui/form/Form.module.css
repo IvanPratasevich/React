@@ -129,6 +129,13 @@
 
 .form__agreement {
   display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form__block {
+  display: flex;
+  justify-content: space-between;
   gap: 15px;
 }
 
@@ -191,4 +198,27 @@
   background: #cdcdcd;
   cursor: pointer;
   color: #010101;
+}
+
+.error {
+  display: block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1em;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: red;
+}
+
+.label__error {
+  color: red;
+}
+
+.form__options {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
 }
