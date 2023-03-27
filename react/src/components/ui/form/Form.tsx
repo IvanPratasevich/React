@@ -2,7 +2,7 @@ import { occupations } from '../../../database/database';
 import React from 'react';
 import styles from './Form.module.css';
 import { capitalizeFirstLetter, idGenerator, Validation } from '../../../utils/utils';
-import { GenderLabels, FormState, IValueWithRef, ICharacter } from '../../../models/interfaces';
+import { GenderLabels, FormState, ICharacter } from '../../../models/interfaces';
 import CardsList from '../cards-list/CardsList';
 import Popup from '../popup/Popup';
 import { initialState } from '../../../constants/constants';
@@ -19,7 +19,6 @@ class Form extends React.Component<Record<string, never>, FormState> {
   private inputCheckbox: React.RefObject<HTMLInputElement>;
   private form: React.RefObject<HTMLFormElement>;
   private options: GenderLabels;
-  private valueWithRef: IValueWithRef;
   private validator: Validation;
   private tempState: FormState;
 
@@ -54,12 +53,6 @@ class Form extends React.Component<Record<string, never>, FormState> {
       male: this.inputGenderFirst,
       female: this.inputGenderSecond,
       'non-binary': this.inputGenderThird,
-    };
-
-    this.valueWithRef = {
-      male: 'inputGenderFirst',
-      female: 'inputGenderSecond',
-      'non-binary': 'inputGenderThird',
     };
 
     this.validator = new Validation();
