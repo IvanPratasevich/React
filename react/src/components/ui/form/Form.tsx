@@ -10,6 +10,7 @@ import {
   ICharacter,
 } from '../../../models/interfaces';
 import CardsList from '../cards-list/CardsList';
+import Popup from '../popup/Popup';
 
 class Form extends React.Component<Record<string, never>, FormState> {
   private inputName: React.RefObject<HTMLInputElement>;
@@ -25,7 +26,6 @@ class Form extends React.Component<Record<string, never>, FormState> {
   private options: GenderLabels;
   private valueWithRef: IValueWithRef;
   private checkboxStates;
-  private successful: boolean;
 
   constructor(props: Record<string, never>) {
     super(props);
@@ -72,6 +72,11 @@ class Form extends React.Component<Record<string, never>, FormState> {
         error: null,
         cards: [],
       },
+
+      popup: {
+        error: null,
+        state: false,
+      },
     };
 
     this.inputName = React.createRef();
@@ -111,8 +116,6 @@ class Form extends React.Component<Record<string, never>, FormState> {
       inputGenderSecond: false,
       inputGenderThird: false,
     };
-
-    this.successful = false;
   }
 
   handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>): Promise<void> => {
@@ -139,8 +142,6 @@ class Form extends React.Component<Record<string, never>, FormState> {
         if (card) {
           this.setState(
             (prevState) => {
-              this.successful = true;
-
               return {
                 inputName: {
                   error: null,
@@ -176,18 +177,40 @@ class Form extends React.Component<Record<string, never>, FormState> {
                   error: null,
                   cards: [...prevState.cardsList.cards, card],
                 },
+                popup: {
+                  error: null,
+                  state: true,
+                },
               };
             },
             () => {
+              this.showPopup();
               this.form.current?.reset();
               this.resetCheckboxes();
+              this.checkboxStates = {
+                inputGenderFirst: false,
+                inputGenderSecond: false,
+                inputGenderThird: false,
+              };
             }
           );
-        } else {
-          this.successful = true;
         }
       }
     );
+  };
+
+  showPopup = () => {
+    setTimeout(() => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          popup: {
+            error: null,
+            state: false,
+          },
+        };
+      });
+    }, 3000);
   };
 
   validateName = (name: string) => {
@@ -487,12 +510,11 @@ class Form extends React.Component<Record<string, never>, FormState> {
               </div>
             </div>
             <input className={`${styles.form__submitBtn}`} type="submit" value="Submit" />
+            <Popup hidden={this.state.popup.state} />
           </div>
         </form>
 
-        {this.successful && (
-          <CardsList page="Form" cardsList={this.state.cardsList.cards} hiddenDataArr={['img']} />
-        )}
+        <CardsList page="Form" cardsList={this.state.cardsList.cards} hiddenDataArr={['img']} />
       </>
     );
   };

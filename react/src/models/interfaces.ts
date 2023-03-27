@@ -75,6 +75,11 @@ interface FormState {
     error: null;
     cards: ICharacter[];
   };
+
+  popup: {
+    error: null;
+    state: boolean;
+  };
 }
 
 interface IValueWithRef {
