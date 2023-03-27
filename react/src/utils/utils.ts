@@ -1,4 +1,5 @@
-const capitalizeFirstLetter = (str: string): string => `${str[0].toUpperCase()}${str.slice(1)}`;
+const capitalizeFirstLetter = (str: string): string =>
+  str.length > 0 ? `${str[0].toUpperCase()}${str.slice(1)}` : '';
 
 const randomNumberGenerator = (from: number, to: number): number =>
   Math.floor(Math.random() * to) + from;

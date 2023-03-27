@@ -7,7 +7,7 @@ const Home = () => (
   <Main
     components={[
       SearchBar,
-      () => <CardsList cardsList={[]} hiddenDataArr={['img', 'name', 'dateOfBirth']} />,
+      () => <CardsList page="Home" cardsList={[]} hiddenDataArr={['img', 'name', 'dateOfBirth']} />,
     ]}
   />
 );

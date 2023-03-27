@@ -1,7 +1,7 @@
 import { occupations } from '../../../database/database';
 import React from 'react';
 import styles from './Form.module.css';
-import { idGenerator } from '../../../utils/utils';
+import { capitalizeFirstLetter, idGenerator } from '../../../utils/utils';
 import {
   GenderLabels,
   GenderInputs,
@@ -55,6 +55,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
       },
 
       inputGender: {
+        value: '',
         error: null,
       },
 
@@ -160,6 +161,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
                   error: null,
                 },
                 inputGender: {
+                  value: '',
                   error: null,
                 },
                 inputCheckbox: {
@@ -271,6 +273,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
     return checkedGender
       ? {
           inputGender: {
+            value: checkedGender.value,
             error: null,
           },
         }
@@ -294,7 +297,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
       img: this.inputImage.current!.files![0]
         ? URL.createObjectURL(this.inputImage.current!.files![0])
         : '',
-      gender: 'Br',
+      gender: capitalizeFirstLetter(this.state.inputGender.value),
       occupation: this.selectOccupation.current!.value,
       dateOfBirth: this.inputDate.current!.value,
       age: Math.floor(
@@ -488,7 +491,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
         </form>
 
         {this.successful && (
-          <CardsList cardsList={this.state.cardsList.cards} hiddenDataArr={['img']} />
+          <CardsList page="Form" cardsList={this.state.cardsList.cards} hiddenDataArr={['img']} />
         )}
       </>
     );

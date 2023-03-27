@@ -59,6 +59,7 @@ interface FormState {
     error: string | null;
   };
   inputGender: {
+    value: string;
     error: string | null;
   };
   inputCheckbox: {
