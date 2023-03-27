@@ -60,14 +60,14 @@ interface FormState {
   };
   inputGender: {
     value: string;
-    error: string | null;
-  };
-  inputCheckbox: {
     values: {
       inputGenderFirst: boolean;
       inputGenderSecond: boolean;
       inputGenderThird: boolean;
     };
+    error: string | null;
+  };
+  inputCheckbox: {
     error: string | null;
   };
 
@@ -88,6 +88,18 @@ interface IValueWithRef {
   'non-binary': string;
 }
 
+interface IInputsGenders {
+  inputGender: {
+    value: string;
+    values: {
+      [key: string]: boolean;
+      inputGenderFirst: boolean;
+      inputGenderSecond: boolean;
+      inputGenderThird: boolean;
+    };
+    error: string | null;
+  };
+}
 export {
   ICharacter,
   ICardProps,
@@ -98,4 +110,5 @@ export {
   GenderLabels,
   FormState,
   IValueWithRef,
+  IInputsGenders,
 };

@@ -1,16 +1,11 @@
 import { occupations } from '../../../database/database';
 import React from 'react';
 import styles from './Form.module.css';
-import { capitalizeFirstLetter, idGenerator } from '../../../utils/utils';
-import {
-  GenderLabels,
-  GenderInputs,
-  FormState,
-  IValueWithRef,
-  ICharacter,
-} from '../../../models/interfaces';
+import { capitalizeFirstLetter, idGenerator, Validation } from '../../../utils/utils';
+import { GenderLabels, FormState, IValueWithRef, ICharacter } from '../../../models/interfaces';
 import CardsList from '../cards-list/CardsList';
 import Popup from '../popup/Popup';
+import { initialState } from '../../../constants/constants';
 
 class Form extends React.Component<Record<string, never>, FormState> {
   private inputName: React.RefObject<HTMLInputElement>;
@@ -25,59 +20,15 @@ class Form extends React.Component<Record<string, never>, FormState> {
   private form: React.RefObject<HTMLFormElement>;
   private options: GenderLabels;
   private valueWithRef: IValueWithRef;
-  private checkboxStates;
+  private validator: Validation;
+  private tempState: FormState;
 
   constructor(props: Record<string, never>) {
     super(props);
 
-    this.state = {
-      inputName: {
-        error: null,
-      },
+    this.tempState = initialState;
 
-      inputSurname: {
-        error: null,
-      },
-
-      inputDate: {
-        value: '',
-        error: null,
-      },
-
-      inputImage: {
-        value: '',
-        error: null,
-      },
-
-      selectOccupation: {
-        value: 'Choose occupation',
-        error: null,
-      },
-
-      inputGender: {
-        value: '',
-        error: null,
-      },
-
-      inputCheckbox: {
-        values: {
-          inputGenderFirst: false,
-          inputGenderSecond: false,
-          inputGenderThird: false,
-        },
-        error: null,
-      },
-
-      cardsList: {
-        error: null,
-        cards: [],
-      },
-
-      popup: {
-        error: null,
-        state: false,
-      },
-    };
+    this.state = this.tempState;
 
     this.inputName = React.createRef();
 
@@ -111,92 +62,53 @@ class Form extends React.Component<Record<string, never>, FormState> {
       'non-binary': 'inputGenderThird',
     };
 
-    this.checkboxStates = {
-      inputGenderFirst: false,
-      inputGenderSecond: false,
-      inputGenderThird: false,
-    };
+    this.validator = new Validation();
   }
 
-  handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>): Promise<void> => {
+  handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
     event?.preventDefault();
-    const tempState = [
-      this.validateName(this.inputName.current!.value),
-      this.validateSurname(this.inputSurname.current!.value),
-      this.validateDate(this.inputDate.current!.value),
-      this.validateImage(this.inputImage.current!.files!),
-      this.validateOccupation(this.selectOccupation.current!.value),
-      this.validateGender([
-        this.inputGenderFirst.current!,
-        this.inputGenderSecond.current!,
-        this.inputGenderThird.current!,
-      ]),
-      this.validateCheckbox(this.inputCheckbox.current!),
-    ];
 
-    this.setState(
-      (prevState) => Object.assign(prevState, ...tempState),
-      () => {
-        const card: ICharacter | null = this.generateCards() || null;
-
-        if (card) {
-          this.setState(
-            (prevState) => {
-              return {
-                inputName: {
-                  error: null,
-                },
-                inputSurname: {
-                  error: null,
-                },
-                inputDate: {
-                  value: '',
-                  error: null,
-                },
-                inputImage: {
-                  value: '',
-                  error: null,
-                },
-                selectOccupation: {
-                  value: 'Choose occupation',
-                  error: null,
-                },
-                inputGender: {
-                  value: '',
-                  error: null,
-                },
-                inputCheckbox: {
-                  values: {
-                    inputGenderFirst: false,
-                    inputGenderSecond: false,
-                    inputGenderThird: false,
-                  },
-                  error: null,
-                },
-                cardsList: {
-                  error: null,
-                  cards: [...prevState.cardsList.cards, card],
-                },
-                popup: {
-                  error: null,
-                  state: true,
-                },
-              };
-            },
-            () => {
-              this.showPopup();
-              this.form.current?.reset();
-              this.resetCheckboxes();
-              this.checkboxStates = {
-                inputGenderFirst: false,
-                inputGenderSecond: false,
-                inputGenderThird: false,
-              };
-            }
-          );
-        }
-      }
+    this.tempState = Object.assign(
+      {},
+      ...[
+        this.validator.validateName(this.inputName.current!.value),
+        this.validator.validateSurname(this.inputSurname.current!.value),
+        this.validator.validateDate(this.inputDate.current!.value),
+        this.validator.validateImage(this.inputImage.current!.files!),
+        this.validator.validateOccupation(this.selectOccupation.current!.value),
+        this.validator.validateGender([
+          this.inputGenderFirst.current!,
+          this.inputGenderSecond.current!,
+          this.inputGenderThird.current!,
+        ]),
+        this.validator.validateCheckbox(this.inputCheckbox.current!),
+      ]
     );
+
+    const card: ICharacter | null = this.generateCards() || null;
+
+    this.updateState(card);
+  };
+
+  updateState(card: ICharacter | null) {
+    const updatesForState = Object.assign({}, card ? initialState : this.tempState, {
+      cardsList: {
+        error: null,
+        cards: [...this.state.cardsList.cards, card].filter(Boolean),
+      },
+      popup: {
+        error: null,
+        state: card ? true : false,
+      },
+    });
+
+    this.setState(updatesForState, () => (card ? this.eventsAfterSubmit() : () => {}));
+  }
+
+  eventsAfterSubmit = () => {
+    this.showPopup();
+    this.form.current?.reset();
+    this.resetCheckboxes();
   };
 
   showPopup = () => {
@@ -213,104 +125,10 @@ class Form extends React.Component<Record<string, never>, FormState> {
     }, 3000);
   };
 
-  validateName = (name: string) => {
-    const nameWithNoSpaces = name.replaceAll(' ', '');
-    const isNameValid = /^[a-zA-Z]+$/.test(nameWithNoSpaces);
-    return isNameValid &&
-      name.length > 3 &&
-      nameWithNoSpaces[0] === nameWithNoSpaces[0].toUpperCase()
-      ? { inputName: { error: null } }
-      : { inputName: { error: 'Please check your name!' } };
-  };
-
-  validateSurname = (surname: string) => {
-    if (surname.length === 0) {
-      return { inputSurname: { error: null } };
-    }
-    const surnameWithNoSpaces = surname.replaceAll(' ', '');
-    const isSurnameValid = /^[a-zA-Z]+$/.test(surnameWithNoSpaces);
-    return isSurnameValid &&
-      surname.length > 3 &&
-      surnameWithNoSpaces[0] === surnameWithNoSpaces[0].toUpperCase()
-      ? { inputSurname: { error: null } }
-      : { inputSurname: { error: 'Please check your surname!' } };
-  };
-
-  validateImage = (fileList: FileList) => {
-    if (fileList.length === 0) {
-      return { inputImage: { error: 'Please attach your image!' } };
-    }
-
-    const [image] = fileList;
-    const { size, type } = image;
-
-    return size < 10 * 1000000 && type.includes('image/')
-      ? { inputImage: { value: URL.createObjectURL(image), error: null } }
-      : { inputImage: { error: 'Please check your image!' } };
-  };
-
-  validateDate = (date: string) => {
-    const [year, month, day] = date.split('-');
-    return +day > 0 &&
-      +day <= 31 &&
-      +month > 0 &&
-      +month <= 12 &&
-      +year > 0 &&
-      +year <= new Date().getFullYear()
-      ? { inputDate: { error: null } }
-      : { inputDate: { error: 'Please enter a valid date!' } };
-  };
-
-  validateOccupation = (value: string) => {
-    return value === 'Choose occupation'
-      ? { selectOccupation: { value: 'Choose occupation', error: 'Please enter occupation!' } }
-      : { selectOccupation: { value: value, error: null } };
-  };
-
   resetCheckboxes = (): void => {
     this.inputGenderFirst.current!.checked = false;
     this.inputGenderSecond.current!.checked = false;
     this.inputGenderThird.current!.checked = false;
-  };
-
-  validateGender = (genders: HTMLInputElement[]) => {
-    const checkedGender = genders.filter((gender) => gender.checked)[0];
-
-    if (!checkedGender) {
-      return {
-        inputGender: {
-          value: '',
-          error: 'Please choose gender!',
-        },
-      };
-    }
-
-    this.checkboxStates.inputGenderFirst = false;
-    this.checkboxStates.inputGenderSecond = false;
-    this.checkboxStates.inputGenderThird = false;
-
-    this.checkboxStates[
-      `${this.valueWithRef[checkedGender.value as keyof GenderLabels]}` as keyof GenderInputs
-    ] = true;
-
-    return checkedGender
-      ? {
-          inputGender: {
-            value: checkedGender.value,
-            error: null,
-          },
-        }
-      : {
-          inputGender: {
-            error: 'Please choose gender!',
-          },
-        };
-  };
-
-  validateCheckbox = (checkbox: HTMLInputElement) => {
-    return checkbox.checked
-      ? { inputCheckbox: { value: checkbox.value, error: null } }
-      : { inputCheckbox: { value: '', error: 'Please accept the agreement!' } };
   };
 
   generateCards = () => {
@@ -320,7 +138,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
       img: this.inputImage.current!.files![0]
         ? URL.createObjectURL(this.inputImage.current!.files![0])
         : '',
-      gender: capitalizeFirstLetter(this.state.inputGender.value),
+      gender: capitalizeFirstLetter(this.tempState.inputGender.value),
       occupation: this.selectOccupation.current!.value,
       dateOfBirth: this.inputDate.current!.value,
       age: Math.floor(
@@ -340,7 +158,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
     const checkedFields: boolean[] = [];
 
     for (const field in mandatoryFields) {
-      if (this.state[mandatoryFields[field] as keyof FormState].error === null) {
+      if (this.tempState[mandatoryFields[field] as keyof FormState].error === null) {
         checkedFields.push(true);
       } else {
         checkedFields.push(false);
@@ -480,7 +298,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
                     className={`${styles.form__inputRadio}`}
                     type="radio"
                     name="gender"
-                    defaultChecked={Object.values(this.checkboxStates)[idx]}
+                    defaultChecked={Object.values(this.state.inputGender.values)[idx]}
                     ref={attribute}
                     value={option}
                   />
