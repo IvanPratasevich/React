@@ -1,7 +1,7 @@
 interface ICharacter {
-  id: number;
+  id?: number;
   name: string;
-  description: string;
+  description?: string;
   img: string;
   gender: string;
   occupation: string;
@@ -68,6 +68,11 @@ interface FormState {
       inputGenderThird: boolean;
     };
     error: string | null;
+  };
+
+  cardsList: {
+    error: null;
+    cards: ICharacter[];
   };
 }
 

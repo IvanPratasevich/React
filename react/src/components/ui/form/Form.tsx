@@ -2,7 +2,14 @@ import { occupations } from '../../../database/database';
 import React from 'react';
 import styles from './Form.module.css';
 import { idGenerator } from '../../../utils/utils';
-import { GenderLabels, GenderInputs, FormState, IValueWithRef } from '../../../models/interfaces';
+import {
+  GenderLabels,
+  GenderInputs,
+  FormState,
+  IValueWithRef,
+  ICharacter,
+} from '../../../models/interfaces';
+import CardsList from '../cards-list/CardsList';
 
 class Form extends React.Component<Record<string, never>, FormState> {
   private inputName: React.RefObject<HTMLInputElement>;
@@ -14,10 +21,11 @@ class Form extends React.Component<Record<string, never>, FormState> {
   private inputGenderSecond: React.RefObject<HTMLInputElement>;
   private inputGenderThird: React.RefObject<HTMLInputElement>;
   private inputCheckbox: React.RefObject<HTMLInputElement>;
+  private form: React.RefObject<HTMLFormElement>;
   private options: GenderLabels;
   private valueWithRef: IValueWithRef;
   private checkboxStates;
-  private cardsList: unknown;
+  private successful: boolean;
 
   constructor(props: Record<string, never>) {
     super(props);
@@ -58,6 +66,11 @@ class Form extends React.Component<Record<string, never>, FormState> {
         },
         error: null,
       },
+
+      cardsList: {
+        error: null,
+        cards: [],
+      },
     };
 
     this.inputName = React.createRef();
@@ -78,6 +91,8 @@ class Form extends React.Component<Record<string, never>, FormState> {
 
     this.inputCheckbox = React.createRef();
 
+    this.form = React.createRef();
+
     this.options = {
       male: this.inputGenderFirst,
       female: this.inputGenderSecond,
@@ -96,12 +111,12 @@ class Form extends React.Component<Record<string, never>, FormState> {
       inputGenderThird: false,
     };
 
-    this.cardsList = [];
+    this.successful = false;
   }
 
-  handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
+  handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>): Promise<void> => {
     event?.preventDefault();
-    this.updateState([
+    const tempState = [
       this.validateName(this.inputName.current!.value),
       this.validateSurname(this.inputSurname.current!.value),
       this.validateDate(this.inputDate.current!.value),
@@ -113,7 +128,64 @@ class Form extends React.Component<Record<string, never>, FormState> {
         this.inputGenderThird.current!,
       ]),
       this.validateCheckbox(this.inputCheckbox.current!),
-    ]);
+    ];
+
+    this.setState(
+      (prevState) => Object.assign(prevState, ...tempState),
+      () => {
+        const card: ICharacter | null = this.generateCards() || null;
+
+        if (card) {
+          this.setState(
+            (prevState) => {
+              this.successful = true;
+
+              return {
+                inputName: {
+                  error: null,
+                },
+                inputSurname: {
+                  error: null,
+                },
+                inputDate: {
+                  value: '',
+                  error: null,
+                },
+                inputImage: {
+                  value: '',
+                  error: null,
+                },
+                selectOccupation: {
+                  value: 'Choose occupation',
+                  error: null,
+                },
+                inputGender: {
+                  error: null,
+                },
+                inputCheckbox: {
+                  values: {
+                    inputGenderFirst: false,
+                    inputGenderSecond: false,
+                    inputGenderThird: false,
+                  },
+                  error: null,
+                },
+                cardsList: {
+                  error: null,
+                  cards: [...prevState.cardsList.cards, card],
+                },
+              };
+            },
+            () => {
+              this.form.current?.reset();
+              this.resetCheckboxes();
+            }
+          );
+        } else {
+          this.successful = true;
+        }
+      }
+    );
   };
 
   validateName = (name: string) => {
@@ -170,6 +242,12 @@ class Form extends React.Component<Record<string, never>, FormState> {
       : { selectOccupation: { value: value, error: null } };
   };
 
+  resetCheckboxes = (): void => {
+    this.inputGenderFirst.current!.checked = false;
+    this.inputGenderSecond.current!.checked = false;
+    this.inputGenderThird.current!.checked = false;
+  };
+
   validateGender = (genders: HTMLInputElement[]) => {
     const checkedGender = genders.filter((gender) => gender.checked)[0];
 
@@ -209,8 +287,43 @@ class Form extends React.Component<Record<string, never>, FormState> {
       : { inputCheckbox: { value: '', error: 'Please accept the agreement!' } };
   };
 
-  updateState = (data: unknown[]) => {
-    this.setState((prevState) => Object.assign(prevState, ...data));
+  generateCards = () => {
+    const card = {
+      name: this.inputName.current!.value,
+      surname: this.inputSurname.current!.value,
+      img: this.inputImage.current!.files![0]
+        ? URL.createObjectURL(this.inputImage.current!.files![0])
+        : '',
+      gender: 'Br',
+      occupation: this.selectOccupation.current!.value,
+      dateOfBirth: this.inputDate.current!.value,
+      age: Math.floor(
+        (+new Date() - +new Date(this.inputDate.current!.value)) / (1000 * 60 * 60 * 24 * 365)
+      ),
+    };
+
+    const mandatoryFields = [
+      'inputName',
+      'inputDate',
+      'inputImage',
+      'selectOccupation',
+      'inputGender',
+      'inputCheckbox',
+    ];
+
+    const checkedFields: boolean[] = [];
+
+    for (const field in mandatoryFields) {
+      if (this.state[mandatoryFields[field] as keyof FormState].error === null) {
+        checkedFields.push(true);
+      } else {
+        checkedFields.push(false);
+      }
+    }
+
+    if (checkedFields.filter((field: boolean) => field).length === mandatoryFields.length) {
+      return card;
+    }
   };
 
   render = () => {
@@ -225,7 +338,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
     } = this.state;
     return (
       <>
-        <form onSubmit={this.handleSubmit} className={`${styles.form}`} noValidate>
+        <form ref={this.form} onSubmit={this.handleSubmit} className={`${styles.form}`} noValidate>
           <div className={`${styles.form__container}`}>
             <h1 className={`${styles.form__title}`}>Form</h1>
             <div className={`${styles.form__field}`}>
@@ -373,7 +486,10 @@ class Form extends React.Component<Record<string, never>, FormState> {
             <input className={`${styles.form__submitBtn}`} type="submit" value="Submit" />
           </div>
         </form>
-        <div className={`${styles.container}`}></div>
+
+        {this.successful && (
+          <CardsList cardsList={this.state.cardsList.cards} hiddenDataArr={['img']} />
+        )}
       </>
     );
   };
