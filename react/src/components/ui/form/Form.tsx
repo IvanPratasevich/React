@@ -150,7 +150,13 @@ class Form extends React.Component<Record<string, never>, FormState> {
 
     return (
       <>
-        <form ref={this.form} onSubmit={this.handleSubmit} className={`${styles.form}`} noValidate>
+        <form
+          data-testid="form"
+          ref={this.form}
+          onSubmit={this.handleSubmit}
+          className={`${styles.form}`}
+          noValidate
+        >
           <div className={`${styles.form__container}`}>
             <h1 className={`${styles.form__title}`}>Form</h1>
             <CustomInput parentState={inputName} inputElement={this.htmlElements.name} />

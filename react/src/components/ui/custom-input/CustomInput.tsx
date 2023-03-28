@@ -30,6 +30,7 @@ class CustomInput extends React.Component<
             : capitalizeFirstLetter(`${inputElement.name}`)}
         </label>
         <input
+          data-testid={`${inputElement.name}`}
           autoComplete="off"
           className={
             inputElement.agreement
@@ -41,10 +42,13 @@ class CustomInput extends React.Component<
           defaultValue=""
           ref={inputElement.ref}
         />
-        <span className={`${styles.error}`}>{parentState.error}</span>
+        <span data-testid={`error-${inputElement.name}`} className={`${styles.error}`}>
+          {parentState.error}
+        </span>
       </div>
     ) : (
       <input
+        data-testid={`${inputElement.name}`}
         className={`${styles.form__submitBtn}`}
         type={`${inputElement.type}`}
         value={`${inputElement.type}`}

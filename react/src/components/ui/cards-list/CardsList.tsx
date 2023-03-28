@@ -10,9 +10,14 @@ const CardsList = (props: { page: string; cardsList: ICharacter[]; hiddenDataArr
   const characters = cardsList.length === 0 && page === 'Home' ? database : cardsList;
 
   return (
-    <div className={styles.container}>
+    <div data-testid="container" className={styles.container}>
       {characters.map((character: ICharacter) => (
-        <Card key={idGenerator()} character={character} hiddenData={hiddenDataArr} />
+        <Card
+          key={idGenerator()}
+          data-testid="card"
+          character={character}
+          hiddenData={hiddenDataArr}
+        />
       ))}
     </div>
   );

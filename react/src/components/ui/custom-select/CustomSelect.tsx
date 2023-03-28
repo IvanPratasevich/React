@@ -22,6 +22,7 @@ class CustomSelect extends React.Component<
           {capitalizeFirstLetter(`${selectElement.name}`)}
         </label>
         <select
+          data-testid={`${selectElement.name}`}
           className={`${styles.form__select}`}
           name="occupation"
           defaultValue="Choose occupation"

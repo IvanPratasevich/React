@@ -24,6 +24,7 @@ class CustomRadio extends React.Component<
         {Object.entries(radioElement.options).map(([option, attribute], idx) => (
           <div className={`${styles.form__row}`} key={idGenerator()}>
             <input
+              data-testid={option}
               className={`${styles.form__inputRadio}`}
               type="radio"
               name="gender"

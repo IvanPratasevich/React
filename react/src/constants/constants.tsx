@@ -93,7 +93,7 @@ const htmlElements: IHtmlElements = {
 
   radio: {
     ref: React.createRef(),
-    name: 'file',
+    name: 'radio',
     type: 'radio',
     options: {
       male: React.createRef(),
