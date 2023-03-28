@@ -13,7 +13,7 @@ class CustomSelect extends React.Component<
 
   render() {
     const { parentState, selectElement, data } = this.props;
-    console.log(selectElement);
+
     return (
       <div className={`${styles.form__field}`}>
         <label
