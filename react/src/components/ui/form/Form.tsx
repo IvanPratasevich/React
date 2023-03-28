@@ -97,7 +97,7 @@ class Form extends React.Component<Record<string, never>, FormState> {
   };
 
   generateCard = (): ICharacter | undefined => {
-    const card = {
+    const card: ICharacter = {
       name: this.htmlElements.name.ref.current!.value,
       surname: this.htmlElements.surname.ref.current!.value,
       img: this.htmlElements.img.ref.current!.files![0]
