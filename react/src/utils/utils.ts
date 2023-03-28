@@ -118,7 +118,7 @@ class Validation {
 
     return size < 10 * 1000000 && type.includes('image/')
       ? { inputImage: { value: URL.createObjectURL(image), error: null } }
-      : { inputImage: { error: 'Please check your image!' } };
+      : { inputImage: { error: 'Please check your size or type of your image!' } };
   };
 
   validateOccupation = (value: string) => {

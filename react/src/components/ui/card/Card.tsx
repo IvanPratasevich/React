@@ -5,6 +5,7 @@ import styles from './Card.module.css';
 
 const Card = (props: ICardProps) => {
   const { character, hiddenData } = props;
+
   return (
     <div className={styles.card} style={{ borderImageOutset: '15px' }}>
       <div className={styles.card__container}>
