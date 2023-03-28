@@ -1,0 +1,15 @@
+.popup {
+  display: inline-block;
+  margin: 0px;
+  font-size: 2em;
+  color: green;
+  background-color: white;
+  padding: 25px;
+  opacity: 1;
+  transition-duration: 2s;
+}
+
+.popup_hidden {
+  display: none;
+  opacity: 0;
+}
