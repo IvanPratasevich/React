@@ -13,11 +13,10 @@ class CustomSelect extends React.Component<
 
   render() {
     const { parentState, selectElement, data } = this.props;
-
     return (
       <div className={`${styles.form__field}`}>
         <label
-          className={`${styles.form__label} ${parentState.name.error && styles.label__error}`}
+          className={`${styles.form__label} ${parentState.error && styles.label__error}`}
           htmlFor={`${selectElement.name}`}
         >
           {capitalizeFirstLetter(`${selectElement.name}`)}
@@ -28,8 +27,8 @@ class CustomSelect extends React.Component<
           defaultValue="Choose occupation"
           ref={selectElement.ref}
         >
-          <option value={parentState.name.value} hidden>
-            {parentState.name.value}
+          <option value={parentState.value} hidden>
+            {parentState.value}
           </option>
           {data.map((el: string) => {
             return (
@@ -39,7 +38,7 @@ class CustomSelect extends React.Component<
             );
           })}
         </select>
-        <span className={`${styles.error}`}>{parentState.name.error}</span>
+        <span className={`${styles.error}`}>{parentState.error}</span>
       </div>
     );
   }

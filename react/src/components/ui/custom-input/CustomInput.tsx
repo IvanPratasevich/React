@@ -21,7 +21,7 @@ class CustomInput extends React.Component<
           className={
             inputElement.agreement
               ? `${styles.form__label}`
-              : `${styles.form__label} ${parentState.name.error && styles.label__error}`
+              : `${styles.form__label} ${parentState.error && styles.label__error}`
           }
           htmlFor={`${inputElement.name}`}
         >
@@ -41,7 +41,7 @@ class CustomInput extends React.Component<
           defaultValue=""
           ref={inputElement.ref}
         />
-        <span className={`${styles.error}`}>{parentState.name.error}</span>
+        <span className={`${styles.error}`}>{parentState.error}</span>
       </div>
     ) : (
       <input

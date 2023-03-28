@@ -40,14 +40,12 @@ interface GenderLabels {
 }
 
 interface IParentState {
-  name: {
-    value?: string;
-    error: string | null;
-    values?: {
-      inputGenderFirst: boolean;
-      inputGenderSecond: boolean;
-      inputGenderThird: boolean;
-    };
+  value?: string;
+  error: string | null;
+  values?: {
+    inputGenderFirst: boolean;
+    inputGenderSecond: boolean;
+    inputGenderThird: boolean;
   };
 }
 

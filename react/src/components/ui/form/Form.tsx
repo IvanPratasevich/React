@@ -153,30 +153,18 @@ class Form extends React.Component<Record<string, never>, FormState> {
         <form ref={this.form} onSubmit={this.handleSubmit} className={`${styles.form}`} noValidate>
           <div className={`${styles.form__container}`}>
             <h1 className={`${styles.form__title}`}>Form</h1>
-            <CustomInput parentState={{ name: inputName }} inputElement={this.htmlElements.name} />
-            <CustomInput
-              parentState={{ name: inputSurname }}
-              inputElement={this.htmlElements.surname}
-            />
-            <CustomInput parentState={{ name: inputDate }} inputElement={this.htmlElements.date} />
-            <CustomInput parentState={{ name: inputImage }} inputElement={this.htmlElements.img} />
+            <CustomInput parentState={inputName} inputElement={this.htmlElements.name} />
+            <CustomInput parentState={inputSurname} inputElement={this.htmlElements.surname} />
+            <CustomInput parentState={inputDate} inputElement={this.htmlElements.date} />
+            <CustomInput parentState={inputImage} inputElement={this.htmlElements.img} />
             <CustomSelect
-              parentState={{ name: selectOccupation }}
+              parentState={selectOccupation}
               selectElement={this.htmlElements.select}
               data={occupations}
             />
-            <CustomRadio
-              parentState={{ name: inputGender }}
-              radioElement={this.htmlElements.radio}
-            />
-            <CustomInput
-              parentState={{ name: inputCheckbox }}
-              inputElement={this.htmlElements.checkbox}
-            />
-            <CustomInput
-              parentState={{ name: inputSubmit }}
-              inputElement={this.htmlElements.submit}
-            />
+            <CustomRadio parentState={inputGender} radioElement={this.htmlElements.radio} />
+            <CustomInput parentState={inputCheckbox} inputElement={this.htmlElements.checkbox} />
+            <CustomInput parentState={inputSubmit} inputElement={this.htmlElements.submit} />
             <Popup hidden={this.state.popup.state} />
           </div>
         </form>

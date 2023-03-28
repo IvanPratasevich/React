@@ -16,7 +16,7 @@ class CustomRadio extends React.Component<
     return (
       <div className={`${styles.form__field} ${styles.form__fieldRadio}`}>
         <label
-          className={`${styles.form__label} ${parentState.name.error && styles.label__error}`}
+          className={`${styles.form__label} ${parentState.error && styles.label__error}`}
           htmlFor="name"
         >
           Choose gender:
@@ -27,7 +27,7 @@ class CustomRadio extends React.Component<
               className={`${styles.form__inputRadio}`}
               type="radio"
               name="gender"
-              defaultChecked={Object.values(parentState.name.values!)[idx]}
+              defaultChecked={Object.values(parentState.values!)[idx]}
               ref={attribute}
               value={option}
             />
@@ -36,7 +36,7 @@ class CustomRadio extends React.Component<
             </label>
           </div>
         ))}
-        <span className={`${styles.error}`}>{parentState.name.error}</span>
+        <span className={`${styles.error}`}>{parentState.error}</span>
       </div>
     );
   }
