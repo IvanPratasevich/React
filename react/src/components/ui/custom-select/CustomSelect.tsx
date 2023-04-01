@@ -1,7 +1,8 @@
 import { ISelectElement, IParentState } from '../../../models/interfaces';
 import React from 'react';
 import styles from './CustomSelect.module.css';
-import { capitalizeFirstLetter, idGenerator } from '../../../utils/utils';
+import { capitalizeFirstLetter } from '../../../utils/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 class CustomSelect extends React.Component<
   { parentState: IParentState; selectElement: ISelectElement; data: string[] },
@@ -33,7 +34,7 @@ class CustomSelect extends React.Component<
           </option>
           {data.map((el: string) => {
             return (
-              <option key={idGenerator()} value={el}>
+              <option key={uuidv4()} value={el}>
                 {el}
               </option>
             );

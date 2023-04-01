@@ -1,7 +1,8 @@
 import { ICardProps } from 'models/interfaces';
 import React from 'react';
-import { capitalizeFirstLetter, idGenerator } from '../../../utils/utils';
+import { capitalizeFirstLetter } from '../../../utils/utils';
 import styles from './Card.module.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const Card = (props: ICardProps) => {
   const { character, hiddenData } = props;
@@ -32,7 +33,7 @@ const Card = (props: ICardProps) => {
         <ul className={styles.card__information}>
           {Object.entries(character).map(([key, value]) =>
             !hiddenData.includes(key) ? (
-              <li key={idGenerator()} className={styles.card__datapiece}>
+              <li key={uuidv4()} className={styles.card__datapiece}>
                 <span
                   className={`${styles.card__datapiece}`}
                   style={{ color: 'white', display: 'inline-block' }}

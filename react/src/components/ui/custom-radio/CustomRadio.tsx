@@ -1,7 +1,7 @@
 import { IRadioElement, IParentState } from '../../../models/interfaces';
 import React from 'react';
 import styles from './CustomRadio.module.css';
-import { idGenerator } from '../../../utils/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 class CustomRadio extends React.Component<
   { parentState: IParentState; radioElement: IRadioElement },
@@ -22,7 +22,7 @@ class CustomRadio extends React.Component<
           Choose gender:
         </label>
         {Object.entries(radioElement.options).map(([option, attribute], idx) => (
-          <div className={`${styles.form__row}`} key={idGenerator()}>
+          <div className={`${styles.form__row}`} key={uuidv4()}>
             <input
               data-testid={option}
               className={`${styles.form__inputRadio}`}
