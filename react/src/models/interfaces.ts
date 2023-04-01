@@ -20,8 +20,8 @@ interface IPathes {
   [key: string]: string;
 }
 
-interface IRoute {
-  route: string;
+interface IPath {
+  path: string;
 }
 
 interface IComponents {
@@ -197,7 +197,7 @@ export {
   ICharacter,
   ICardProps,
   IPathes,
-  IRoute,
+  IPath,
   IComponents,
   GenderInputs,
   GenderLabels,
