@@ -19,7 +19,7 @@ const SearchBar = () => {
       saveToLocalStore(inputValue);
       window.removeEventListener('beforeunload', saveToLocalStore.bind(null, inputValue));
     };
-  }, [inputValue]);
+  }, []);
 
   return (
     <input
