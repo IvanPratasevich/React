@@ -193,6 +193,7 @@ interface IInputsGenders {
     error: string | null;
   };
 }
+
 export {
   ICharacter,
   ICardProps,

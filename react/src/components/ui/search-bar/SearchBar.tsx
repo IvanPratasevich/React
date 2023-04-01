@@ -1,48 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './SearchBar.module.css';
+import { saveToLocalStore } from '../../../utils/utils';
 
-class SearchBar extends React.Component<{ [key: string]: string }, { inputValue: string }> {
-  constructor(props: { [key: string]: string } | Readonly<{ [key: string]: string }>) {
-    super(props);
-    const storageInputValue: string = localStorage.getItem('inputValue')
-      ? JSON.parse(localStorage.getItem('inputValue')!)
-      : '';
-    this.state = { inputValue: storageInputValue };
-  }
+const SearchBar = () => {
+  const storageInputValue: string = localStorage.getItem('inputValue')
+    ? JSON.parse(localStorage.getItem('inputValue')!)
+    : '';
 
-  handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const target = e.target;
-    this.setState({ inputValue: target.value });
-  };
+  const [inputValue, setState] = useState(storageInputValue);
 
-  componentDidMount(): void {
-    window.addEventListener('beforeunload', this.saveToLocalStore);
-  }
+  useEffect(() => {
+    saveToLocalStore(inputValue);
+    window.addEventListener('beforeunload', saveToLocalStore.bind(null, inputValue));
+  }, [inputValue]);
 
-  saveToLocalStore = (): void => {
-    const { inputValue } = this.state;
-    localStorage.setItem('inputValue', JSON.stringify(inputValue));
-  };
+  useEffect(() => {
+    return () => {
+      saveToLocalStore(inputValue);
+      window.removeEventListener('beforeunload', saveToLocalStore.bind(null, inputValue));
+    };
+  }, [inputValue]);
 
-  componentWillUnmount(): void {
-    this.saveToLocalStore();
-    window.removeEventListener('beforeunload', this.saveToLocalStore);
-  }
-
-  render() {
-    const { inputValue } = this.state;
-    return (
-      <input
-        autoFocus
-        placeholder="Search Bar"
-        autoComplete="off"
-        className={styles.searchbar}
-        type="search"
-        onChange={this.handleInput}
-        value={inputValue}
-      ></input>
-    );
-  }
-}
+  return (
+    <input
+      autoFocus
+      placeholder="Search Bar"
+      autoComplete="off"
+      className={styles.searchbar}
+      type="search"
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setState(e.target.value)}
+      value={inputValue}
+    ></input>
+  );
+};
 
 export default SearchBar;

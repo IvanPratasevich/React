@@ -163,4 +163,8 @@ class Validation {
   };
 }
 
-export { capitalizeFirstLetter, idGenerator, Validation };
+const saveToLocalStore = (inputValue: string): void => {
+  localStorage.setItem('inputValue', JSON.stringify(inputValue));
+};
+
+export { capitalizeFirstLetter, idGenerator, Validation, saveToLocalStore };
