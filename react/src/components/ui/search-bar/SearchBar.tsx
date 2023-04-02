@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './SearchBar.module.css';
 import { saveToLocalStore } from '../../../utils/utils';
 
 const SearchBar = () => {
-  const storageInputValue: string = localStorage.getItem('inputValue')
-    ? JSON.parse(localStorage.getItem('inputValue')!)
-    : '';
+  const storageInputValue: string = localStorage.getItem('inputValue') || '';
 
-  const [inputValue, setState] = useState(storageInputValue);
+  const [inputValue, setInputValue] = useState(storageInputValue);
+
+  const searchBarRef = useRef<string>(inputValue);
 
   useEffect(() => {
-    saveToLocalStore(inputValue);
-    window.addEventListener('beforeunload', saveToLocalStore.bind(null, inputValue));
+    searchBarRef.current = inputValue;
   }, [inputValue]);
 
   useEffect(() => {
     return () => {
-      saveToLocalStore(inputValue);
-      window.removeEventListener('beforeunload', saveToLocalStore.bind(null, inputValue));
+      saveToLocalStore(searchBarRef.current);
     };
   }, []);
 
@@ -28,7 +26,7 @@ const SearchBar = () => {
       autoComplete="off"
       className={styles.searchbar}
       type="search"
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setState(e.target.value)}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
       value={inputValue}
     ></input>
   );
