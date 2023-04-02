@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './SearchBar.module.css';
 import { saveToLocalStore } from '../../../utils/utils';
+import { useBeforeUnload } from 'react-router-dom';
 
 const SearchBar = () => {
   const storageInputValue: string = localStorage.getItem('inputValue') || '';
@@ -18,6 +19,12 @@ const SearchBar = () => {
       saveToLocalStore(searchBarRef.current);
     };
   }, []);
+
+  useBeforeUnload(
+    useCallback(() => {
+      saveToLocalStore(searchBarRef.current);
+    }, [])
+  );
 
   return (
     <input
