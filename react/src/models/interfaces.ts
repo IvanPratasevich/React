@@ -40,138 +40,113 @@ interface GenderLabels {
   'non-binary': React.RefObject<HTMLInputElement>;
 }
 
-interface IParentState {
-  value?: string;
-  error: string | null;
-  values?: {
-    inputGenderFirst: boolean;
-    inputGenderSecond: boolean;
-    inputGenderThird: boolean;
-  };
-}
-
 interface IHtmlElements {
   name: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
+    validation: {
+      required?: string;
+      minLength?: {
+        value: number;
+        message: string;
+      };
+      pattern?: {
+        value: RegExp;
+        message: string;
+      };
+    };
   };
-
   surname: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
+    validation: {
+      minLength: {
+        value: number;
+        message: string;
+      };
+      pattern: {
+        value: RegExp;
+        message: string;
+      };
+    };
   };
-
   date: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
+    validation: {
+      required: string;
+    };
   };
-
   img: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
+    validation: {
+      required: string;
+      validate: (file: FileList) => boolean | string;
+    };
   };
-
   select: {
-    ref: React.RefObject<HTMLSelectElement>;
     name: string;
+    validation: {
+      validate: (data: string) => true | string;
+    };
   };
-
   radio: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
     options: {
-      male: React.RefObject<HTMLInputElement>;
-      female: React.RefObject<HTMLInputElement>;
-      'non-binary': React.RefObject<HTMLInputElement>;
+      [key: string]: string;
+    };
+    validation: {
+      required: string;
     };
   };
-
   checkbox: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
     agreement: string;
+    validation: {
+      required: string;
+    };
   };
-
   submit: {
-    ref: React.RefObject<HTMLInputElement>;
     name: string;
     type: string;
   };
 }
 
 interface IInputElement {
-  ref: React.RefObject<HTMLInputElement>;
   name: string;
   type: string;
+  validation?: {
+    required?: string;
+    minLength?: {
+      value: number;
+      message: string;
+    };
+    pattern?: {
+      value: RegExp;
+      message: string;
+    };
+  };
   agreement?: string;
 }
 
 interface IRadioElement {
-  ref: React.RefObject<HTMLInputElement>;
   name: string;
   type: string;
   options: {
-    male: React.RefObject<HTMLInputElement>;
-    female: React.RefObject<HTMLInputElement>;
-    'non-binary': React.RefObject<HTMLInputElement>;
+    [key: string]: string;
+  };
+  validation: {
+    required: string;
   };
 }
 
 interface ISelectElement {
-  ref: React.RefObject<HTMLSelectElement>;
   name: string;
-}
-
-interface FormState {
-  inputName: {
-    error: string | null;
-  };
-  inputSurname: {
-    error: string | null;
-  };
-  inputDate: {
-    value: string;
-    error: string | null;
-  };
-  inputImage: {
-    value: string;
-    error: string | null;
-  };
-  selectOccupation: {
-    value: string;
-    error: string | null;
-  };
-  inputGender: {
-    value: string;
-    values: {
-      inputGenderFirst: boolean;
-      inputGenderSecond: boolean;
-      inputGenderThird: boolean;
-    };
-    error: string | null;
-  };
-  inputCheckbox: {
-    error: string | null;
-  };
-
-  cardsList: {
-    error: null;
-    cards: ICharacter[];
-  };
-
-  popup: {
-    error: null;
-    state: boolean;
-  };
-
-  inputSubmit: {
-    error: null;
+  validation: {
+    validate: (data: string) => true | string;
   };
 }
 
@@ -194,6 +169,23 @@ interface IInputsGenders {
   };
 }
 
+interface IFormState {
+  cards: ICharacter[];
+  showPopup: boolean;
+  occupation: string;
+}
+
+interface IFields {
+  name: string;
+  surname: string;
+  date: string;
+  image: FileList;
+  occupation: string;
+  radio: string;
+  checkbox: boolean;
+  submit: string;
+}
+
 export {
   ICharacter,
   ICardProps,
@@ -202,12 +194,12 @@ export {
   IComponents,
   GenderInputs,
   GenderLabels,
-  FormState,
   IValueWithRef,
   IInputsGenders,
   IHtmlElements,
-  IParentState,
   IInputElement,
   ISelectElement,
   IRadioElement,
+  IFormState,
+  IFields,
 };

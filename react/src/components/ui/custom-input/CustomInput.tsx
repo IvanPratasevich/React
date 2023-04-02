@@ -1,60 +1,55 @@
-import { IInputElement, IParentState } from '../../../models/interfaces';
+import { IInputElement } from '../../../models/interfaces';
 import React from 'react';
 import styles from './CustomInput.module.css';
 import { capitalizeFirstLetter } from '../../../utils/utils';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
-class CustomInput extends React.Component<
-  { parentState: IParentState; inputElement: IInputElement },
-  { parentState: IParentState; inputElement: IInputElement }
-> {
-  constructor(props: { parentState: IParentState; inputElement: IInputElement }) {
-    super(props);
-  }
+const CustomInput = (props: {
+  register: UseFormRegister<FieldValues>;
+  inputElement: IInputElement;
+  errors: FieldErrors<FieldValues>;
+}) => {
+  const { register, inputElement, errors } = props;
 
-  render() {
-    const { parentState, inputElement } = this.props;
-    return inputElement.name !== 'submit' ? (
-      <div
-        className={inputElement.agreement ? `${styles.form__agreement}` : `${styles.form__field}`}
+  return inputElement.name !== 'submit' ? (
+    <div className={inputElement.agreement ? `${styles.form__agreement}` : `${styles.form__field}`}>
+      <label
+        className={
+          inputElement.agreement
+            ? `${styles.form__label}`
+            : `${styles.form__label} ${errors[inputElement.name] && styles.label__error}`
+        }
+        htmlFor={`${inputElement.name}`}
       >
-        <label
-          className={
-            inputElement.agreement
-              ? `${styles.form__label}`
-              : `${styles.form__label} ${parentState.error && styles.label__error}`
-          }
-          htmlFor={`${inputElement.name}`}
-        >
-          {inputElement.agreement
-            ? inputElement.agreement
-            : capitalizeFirstLetter(`${inputElement.name}`)}
-        </label>
-        <input
-          data-testid={`${inputElement.name}`}
-          autoComplete="off"
-          className={
-            inputElement.agreement
-              ? `${styles.form__input} ${styles.form__inputCheckbox}`
-              : `${styles.form__input}`
-          }
-          type={`${inputElement.type}`}
-          name={`${inputElement.name}`}
-          defaultValue=""
-          ref={inputElement.ref}
-        />
-        <span data-testid={`error-${inputElement.name}`} className={`${styles.error}`}>
-          {parentState.error}
-        </span>
-      </div>
-    ) : (
+        {inputElement.agreement
+          ? inputElement.agreement
+          : capitalizeFirstLetter(`${inputElement.name}`)}
+      </label>
       <input
+        {...register(`${inputElement.name}`, inputElement.validation)}
         data-testid={`${inputElement.name}`}
-        className={`${styles.form__submitBtn}`}
+        autoComplete="off"
+        className={
+          inputElement.agreement
+            ? `${styles.form__input} ${styles.form__inputCheckbox}`
+            : `${styles.form__input}`
+        }
         type={`${inputElement.type}`}
-        value={`${inputElement.type}`}
+        defaultValue=""
       />
-    );
-  }
-}
+      <span data-testid={`error-${inputElement.name}`} className={`${styles.error}`}>
+        {errors[inputElement.name as string] &&
+          (errors[inputElement.name as string]?.message as string)}
+      </span>
+    </div>
+  ) : (
+    <input
+      data-testid={`${inputElement.name}`}
+      className={`${styles.form__submitBtn}`}
+      type={`${inputElement.type}`}
+      value={`${inputElement.type}`}
+    />
+  );
+};
 
 export default CustomInput;

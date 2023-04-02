@@ -1,5 +1,7 @@
-import React from 'react';
-import { FormState, IHtmlElements, IPathes } from '../models/interfaces';
+import { IHtmlElements, IPathes } from '../models/interfaces';
+import { Validation } from '../utils/utils';
+
+const validator = new Validation();
 
 const Pathes: IPathes = {
   '/about-us': 'About us',
@@ -8,110 +10,94 @@ const Pathes: IPathes = {
   '/form': 'Form',
 };
 
-const initialState: FormState = {
-  inputName: {
-    error: null,
-  },
-
-  inputSurname: {
-    error: null,
-  },
-
-  inputDate: {
-    value: '',
-    error: null,
-  },
-
-  inputImage: {
-    value: '',
-    error: null,
-  },
-
-  selectOccupation: {
-    value: 'Choose occupation',
-    error: null,
-  },
-
-  inputGender: {
-    value: '',
-    values: {
-      inputGenderFirst: false,
-      inputGenderSecond: false,
-      inputGenderThird: false,
-    },
-    error: null,
-  },
-
-  inputCheckbox: {
-    error: null,
-  },
-
-  inputSubmit: {
-    error: null,
-  },
-
-  cardsList: {
-    error: null,
-    cards: [],
-  },
-
-  popup: {
-    error: null,
-    state: false,
-  },
+const initialState = {
+  cards: [],
+  showPopup: false,
+  occupation: 'Choose occupation',
 };
 
 const htmlElements: IHtmlElements = {
   name: {
-    ref: React.createRef(),
     name: 'name',
     type: 'text',
+    validation: {
+      required: 'The field is required!',
+      minLength: {
+        value: 2,
+        message: 'Name must be at least 2 characters long!',
+      },
+
+      pattern: {
+        value: /^[a-zA-Z\s]+$/,
+        message: 'Please check your name!',
+      },
+    },
   },
 
   surname: {
-    ref: React.createRef(),
     name: 'surname',
     type: 'text',
+    validation: {
+      minLength: {
+        value: 3,
+        message: 'Surname must be at least 3 characters long!',
+      },
+
+      pattern: {
+        value: /^[a-zA-Z]+$/,
+        message: 'Please check your surname!',
+      },
+    },
   },
 
   date: {
-    ref: React.createRef(),
     name: 'date',
     type: 'date',
+    validation: {
+      required: 'The field is required!',
+    },
   },
 
   img: {
-    ref: React.createRef(),
     name: 'image',
     type: 'file',
+    validation: {
+      required: 'The field is required!',
+      validate: validator.validateImage,
+    },
   },
 
   select: {
-    ref: React.createRef(),
     name: 'occupation',
+    validation: {
+      validate: (data: string) => (data === 'Choose occupation' ? 'The field is required!' : true),
+    },
   },
 
   radio: {
-    ref: React.createRef(),
     name: 'radio',
     type: 'radio',
     options: {
-      male: React.createRef(),
-      female: React.createRef(),
-      'non-binary': React.createRef(),
+      male: 'male',
+      female: 'female',
+      'non-binary': 'non-binary',
+    },
+    validation: {
+      required: 'The field is required!',
     },
   },
 
   checkbox: {
-    ref: React.createRef(),
     name: 'checkbox',
     type: 'checkbox',
     agreement:
       'I agree that my personal data will be processed in the ways that correspond to the purposes of the processing of personal data',
+    validation: {
+      required: 'The field is required!',
+    },
   },
 
   submit: {
-    ref: React.createRef(),
     name: 'submit',
     type: 'submit',
   },

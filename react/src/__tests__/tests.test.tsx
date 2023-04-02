@@ -60,7 +60,7 @@ describe('Testing form', () => {
     expect(form).toBeVisible();
   });
 
-  test('Should show error', () => {
+  test('Should show error', async () => {
     const name: HTMLInputElement = screen.getByTestId('name');
     const surname: HTMLInputElement = screen.getByTestId('surname');
     const date: HTMLInputElement = screen.getByTestId('date');
@@ -76,12 +76,11 @@ describe('Testing form', () => {
     radio.value = 'Female';
     checkbox.value = 'on';
 
-    act(() => {
-      submit.click();
-    });
+    await userEvent.click(submit);
 
     const error = screen.getByTestId('error-image');
-    const errorText = within(error).getByText('Please attach your image!');
+    const errorText = within(error).getByText('The field is required!');
+
     expect(errorText).not.toBeNull();
   });
 
