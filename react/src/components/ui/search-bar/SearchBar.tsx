@@ -1,48 +1,42 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './SearchBar.module.css';
+import { saveToLocalStore } from '../../../utils/utils';
+import { useBeforeUnload } from 'react-router-dom';
 
-class SearchBar extends React.Component<{ [key: string]: string }, { inputValue: string }> {
-  constructor(props: { [key: string]: string } | Readonly<{ [key: string]: string }>) {
-    super(props);
-    const storageInputValue: string = localStorage.getItem('inputValue')
-      ? JSON.parse(localStorage.getItem('inputValue')!)
-      : '';
-    this.state = { inputValue: storageInputValue };
-  }
+const SearchBar = () => {
+  const storageInputValue: string = localStorage.getItem('inputValue') || '';
 
-  handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const target = e.target;
-    this.setState({ inputValue: target.value });
-  };
+  const [inputValue, setInputValue] = useState(storageInputValue);
 
-  componentDidMount(): void {
-    window.addEventListener('beforeunload', this.saveToLocalStore);
-  }
+  const searchBarRef = useRef<string>(inputValue);
 
-  saveToLocalStore = (): void => {
-    const { inputValue } = this.state;
-    localStorage.setItem('inputValue', JSON.stringify(inputValue));
-  };
+  useEffect(() => {
+    searchBarRef.current = inputValue;
+  }, [inputValue]);
 
-  componentWillUnmount(): void {
-    this.saveToLocalStore();
-    window.removeEventListener('beforeunload', this.saveToLocalStore);
-  }
+  useEffect(() => {
+    return () => {
+      saveToLocalStore(searchBarRef.current);
+    };
+  });
 
-  render() {
-    const { inputValue } = this.state;
-    return (
-      <input
-        autoFocus
-        placeholder="Search Bar"
-        autoComplete="off"
-        className={styles.searchbar}
-        type="search"
-        onChange={this.handleInput}
-        value={inputValue}
-      ></input>
-    );
-  }
-}
+  useBeforeUnload(
+    useCallback(() => {
+      saveToLocalStore(searchBarRef.current);
+    }, [])
+  );
+
+  return (
+    <input
+      autoFocus
+      placeholder="Search Bar"
+      autoComplete="off"
+      className={styles.searchbar}
+      type="search"
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+      value={inputValue}
+    ></input>
+  );
+};
 
 export default SearchBar;

@@ -74,11 +74,7 @@ class Validation {
   };
 
   validateName = (name: string) => {
-    const nameWithNoSpaces = name.replaceAll(' ', '');
-    const isNameValid = /^[a-zA-Z]+$/.test(nameWithNoSpaces);
-    return isNameValid &&
-      name.length > 3 &&
-      nameWithNoSpaces[0] === nameWithNoSpaces[0].toUpperCase()
+    return name.length > 3 && name[0] === name[0].toUpperCase()
       ? { inputName: { error: null } }
       : { inputName: { error: 'Please check your name!' } };
   };
@@ -108,17 +104,17 @@ class Validation {
       : { inputDate: { error: 'Please enter a valid date!' } };
   };
 
-  validateImage = (fileList: FileList) => {
+  validateImage = (fileList: FileList): string | boolean => {
     if (fileList.length === 0) {
-      return { inputImage: { error: 'Please attach your image!' } };
+      return 'Please attach your image!';
     }
 
     const [image] = fileList;
     const { size, type } = image;
 
     return size < 10 * 1000000 && type.includes('image/')
-      ? { inputImage: { value: URL.createObjectURL(image), error: null } }
-      : { inputImage: { error: 'Please check your size or type of your image!' } };
+      ? true
+      : 'Please check your size or type of your image!';
   };
 
   validateOccupation = (value: string) => {
@@ -163,4 +159,8 @@ class Validation {
   };
 }
 
-export { capitalizeFirstLetter, idGenerator, Validation };
+const saveToLocalStore = (inputValue: string): void => {
+  localStorage.setItem('inputValue', inputValue);
+};
+
+export { capitalizeFirstLetter, idGenerator, Validation, saveToLocalStore };
