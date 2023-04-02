@@ -18,7 +18,7 @@ const SearchBar = () => {
     return () => {
       saveToLocalStore(searchBarRef.current);
     };
-  }, []);
+  });
 
   useBeforeUnload(
     useCallback(() => {
