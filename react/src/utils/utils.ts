@@ -1,4 +1,5 @@
-import { IInputsGenders } from '../models/interfaces';
+import { apiUrl } from '../constants/constants';
+import { ICharacter, IInputsGenders } from '../models/interfaces';
 
 const capitalizeFirstLetter = (str: string): string =>
   str.length > 0 ? `${str[0].toUpperCase()}${str.slice(1)}` : '';
@@ -163,4 +164,17 @@ const saveToLocalStore = (inputValue: string): void => {
   localStorage.setItem('inputValue', inputValue);
 };
 
-export { capitalizeFirstLetter, idGenerator, Validation, saveToLocalStore };
+class Api {
+  private url: string;
+
+  constructor(url = apiUrl) {
+    this.url = url;
+  }
+
+  public async getCharacters(): Promise<ICharacter[]> {
+    const response: Response = await fetch(`${this.url}/characters`);
+    return response.json();
+  }
+}
+
+export { capitalizeFirstLetter, idGenerator, Validation, saveToLocalStore, Api };
