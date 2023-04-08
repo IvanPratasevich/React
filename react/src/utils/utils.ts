@@ -171,8 +171,10 @@ class Api {
     this.url = url;
   }
 
-  public async getCharacters(): Promise<ICharacter[]> {
-    const response: Response = await fetch(`${this.url}/characters`);
+  public async getCharacters(name: string | null): Promise<ICharacter[]> {
+    const response: Response = await fetch(
+      !name ? `${this.url}/characters` : `${this.url}/characters/?name=${name}`
+    );
     return response.json();
   }
 }

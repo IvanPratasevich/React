@@ -103,6 +103,6 @@ const htmlElements: IHtmlElements = {
   },
 };
 
-const apiUrl = 'https://cyberpunk2077-api.vercel.app';
+const apiUrl = 'http://localhost:4444';
 
 export { Pathes, initialState, htmlElements, apiUrl };
