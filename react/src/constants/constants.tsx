@@ -105,4 +105,6 @@ const htmlElements: IHtmlElements = {
 
 const apiUrl = 'http://localhost:4444';
 
-export { Pathes, initialState, htmlElements, apiUrl };
+const apiKey = 'fI25naItW6FnL3otm45EQkytQ6DTKhtf';
+
+export { Pathes, initialState, htmlElements, apiUrl, apiKey };

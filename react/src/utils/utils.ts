@@ -1,5 +1,5 @@
-import { apiUrl } from '../constants/constants';
-import { ICharacter, IInputsGenders } from '../models/interfaces';
+import { apiKey, apiUrl } from '../constants/constants';
+import { ICharacter, IGiphyResponse, IInputsGenders } from '../models/interfaces';
 
 const capitalizeFirstLetter = (str: string): string =>
   str.length > 0 ? `${str[0].toUpperCase()}${str.slice(1)}` : '';
@@ -171,11 +171,43 @@ class Api {
     this.url = url;
   }
 
-  public async getCharacters(name: string): Promise<ICharacter[]> {
-    const response: Response = await fetch(
-      name === '' ? `${this.url}/characters` : `${this.url}/characters/?name=${name}`
-    );
-    return response.json();
+  public async getCharacters(name: string): Promise<ICharacter[] | Error> {
+    try {
+      const response: Response = await fetch(
+        name === '' ? `${this.url}/characters` : `${this.url}/characters/?name=${name}`
+      );
+
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.statusText);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('Error');
+      }
+    }
+  }
+
+  public async getGifs(name: string): Promise<IGiphyResponse | Error> {
+    try {
+      const url = `https://api.giphy.com/v1/gifs/search?q=${name}&api_key=${apiKey}&q=${name}`;
+      const response: Response = await fetch(url);
+
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.statusText);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('Error');
+      }
+    }
   }
 }
 

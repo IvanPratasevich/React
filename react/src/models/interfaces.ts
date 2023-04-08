@@ -1,3 +1,5 @@
+import { GIFObject } from 'giphy-api';
+
 interface ICharacter {
   id?: number;
   name: string;
@@ -186,6 +188,17 @@ interface IFields {
   submit: string;
 }
 
+interface IGiphyResponse {
+  pagination: { total_count: number; count: number; offset: number };
+  meta: {
+    status: number;
+    msg: string;
+    response_id: string;
+  };
+
+  data: GIFObject[];
+}
+
 export {
   ICharacter,
   ICardProps,
@@ -202,4 +215,5 @@ export {
   IRadioElement,
   IFormState,
   IFields,
+  IGiphyResponse,
 };

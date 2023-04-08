@@ -7,6 +7,8 @@ import { ICharacter } from 'models/interfaces';
 import CardLoader from '../../ui/card-loader/CardLoader';
 import { v4 as uuidv4 } from 'uuid';
 
+import Error from '../../ui/error/Error';
+
 const Home = () => {
   const [characters, setCharacters] = useState<ICharacter[]>([]);
 
@@ -17,15 +19,23 @@ const Home = () => {
     loaded: false,
   });
 
+  const [error, setError] = useState<null | { errorMessage: string }>(null);
+
   const api: Api = new Api();
 
   useEffect(() => {
     if (searchState.searchValue !== null && searchState.loaded) {
       setTimeout(() => {
-        api.getCharacters(searchState.searchValue!).then((data: ICharacter[]) => {
-          setCharacters(data);
-          isLoading(false);
-        });
+        api
+          .getCharacters(searchState.searchValue!)
+          .then((data) => {
+            setCharacters(data as ICharacter[]);
+            isLoading(false);
+          })
+          .catch((err: Error) => {
+            console.log(err);
+            setError({ errorMessage: err.message });
+          });
       }, 5000);
     }
   }, [searchState]);
@@ -34,7 +44,9 @@ const Home = () => {
     <main className={styles.main}>
       <>
         <SearchBar setSearchValue={setSearchValue} isLoading={isLoading} />
-        {loading ? (
+        {error ? (
+          <Error errorMessage={error.errorMessage} />
+        ) : loading ? (
           <div className="container">
             {generateArr(6).map(() => {
               return <CardLoader key={uuidv4()} />;
