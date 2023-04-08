@@ -19,7 +19,7 @@ const Home = () => {
     loaded: false,
   });
 
-  const [error, setError] = useState<null | { errorMessage: string }>(null);
+  const [error, setError] = useState<{ errorMessage: string }>({ errorMessage: '' });
 
   const api: Api = new Api();
 
@@ -29,6 +29,7 @@ const Home = () => {
         api
           .getCharacters(searchState.searchValue!)
           .then((data) => {
+            setError({ errorMessage: '' });
             setCharacters(data as ICharacter[]);
             isLoading(false);
           })
@@ -44,7 +45,7 @@ const Home = () => {
     <main className={styles.main}>
       <>
         <SearchBar setSearchValue={setSearchValue} isLoading={isLoading} />
-        {error ? (
+        {error.errorMessage ? (
           <Error errorMessage={error.errorMessage} />
         ) : loading ? (
           <div className="container">
@@ -54,6 +55,7 @@ const Home = () => {
           </div>
         ) : (
           <CardsList
+            previewMode={true}
             page="Home"
             cardsList={characters}
             hiddenDataArr={[

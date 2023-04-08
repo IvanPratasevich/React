@@ -16,6 +16,7 @@ interface ICardProps {
   character: ICharacter;
   key: string;
   hiddenData: string[];
+  preview: boolean;
 }
 
 interface IPathes {

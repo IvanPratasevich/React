@@ -4,14 +4,25 @@ import { ICharacter } from '../../../models/interfaces';
 import { v4 as uuidv4 } from 'uuid';
 import Error from '../error/Error';
 
-const CardsList = (props: { page: string; cardsList: ICharacter[]; hiddenDataArr: string[] }) => {
-  const { cardsList, hiddenDataArr } = props;
+const CardsList = (props: {
+  page: string;
+  cardsList: ICharacter[];
+  hiddenDataArr: string[];
+  previewMode: boolean;
+}) => {
+  const { cardsList, hiddenDataArr, previewMode } = props;
   const characters = cardsList;
 
   return characters.length > 0 ? (
     <div data-testid="container" className="container">
       {characters.map((character: ICharacter) => (
-        <Card key={uuidv4()} data-testid="card" character={character} hiddenData={hiddenDataArr} />
+        <Card
+          key={uuidv4()}
+          preview={previewMode}
+          data-testid="card"
+          character={character}
+          hiddenData={hiddenDataArr}
+        />
       ))}
     </div>
   ) : (

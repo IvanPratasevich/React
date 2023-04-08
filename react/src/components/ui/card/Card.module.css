@@ -80,3 +80,31 @@
   align-self: center;
   min-width: 400px;
 }
+
+.hidden {
+  display: none;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.5em;
+  padding: 1em;
+  line-height: 21px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #02d7f2;
+  background: #010101;
+  outline: none;
+  border: 2px solid #ffff;
+  transition: all 1s ease-out;
+}
+
+.submit:hover {
+  background: #ffff;
+  cursor: pointer;
+  color: #010101;
+}

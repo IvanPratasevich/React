@@ -5,12 +5,16 @@ import styles from './Card.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 const Card = (props: ICardProps) => {
-  const { character, hiddenData } = props;
+  const { character, hiddenData, preview } = props;
+
+  const handleModal = () => {
+    console.log(character);
+  };
 
   return (
     <div className={styles.card} style={{ borderImageOutset: '15px' }}>
       <div className={styles.card__container}>
-        <div className={styles.card__decoration}>
+        <div className={preview ? styles.hidden : styles.card__decoration}>
           <span className={styles.card__arrow}></span>
           <span className={styles.card__date}> {character.dateOfBirth}</span>
         </div>
@@ -40,6 +44,11 @@ const Card = (props: ICardProps) => {
             )
           )}
         </ul>
+        {preview && (
+          <button className={`${styles.submit}`} type="submit" onClick={handleModal}>
+            submit
+          </button>
+        )}
       </div>
     </div>
   );

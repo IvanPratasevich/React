@@ -174,7 +174,7 @@ class Api {
   public async getCharacters(name: string): Promise<ICharacter[] | Error> {
     try {
       const response: Response = await fetch(
-        name === '' ? `${this.url}/characters` : `${this.url}/characters/?name=${name}`
+        name === '' ? `${this.url}/characters` : `${this.url}/characters/name/${name}`
       );
 
       if (response.ok) {
