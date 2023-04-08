@@ -9,7 +9,7 @@ const Home = () => {
   const [characters, setCharacters] = useState<ICharacter[]>([]);
 
   useEffect(() => {
-    const api = new Api();
+    const api: Api = new Api();
     api.getCharacters().then((data: ICharacter[]) => setCharacters(data));
   }, []);
 
@@ -21,7 +21,16 @@ const Home = () => {
           <CardsList
             page="Home"
             cardsList={characters}
-            hiddenDataArr={['img', 'name', 'dateOfBirth']}
+            hiddenDataArr={[
+              'img',
+              'name',
+              'dateOfBirth',
+              'id',
+              'description',
+              'gender',
+              'occupation',
+              'age',
+            ]}
           />
         ),
       ]}

@@ -21,13 +21,6 @@ const Card = (props: ICardProps) => {
             backgroundImage: `url(
             ${character.img}
           )`,
-            width: '100%',
-            height: '300px',
-            borderRadius: '20px',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            alignSelf: 'center',
           }}
         ></div>
         <ul className={styles.card__information}>
