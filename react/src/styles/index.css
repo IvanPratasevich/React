@@ -45,3 +45,24 @@ button {
   flex-direction: column;
   gap: 65px;
 }
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 90%;
+  row-gap: 5em;
+}
+
+@media (max-width: 1700px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 1198px) {
+  .container {
+    max-width: 600px;
+    justify-content: center;
+  }
+}

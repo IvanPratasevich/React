@@ -3,8 +3,16 @@ import styles from './SearchBar.module.css';
 import { saveToLocalStore } from '../../../utils/utils';
 import { useBeforeUnload } from 'react-router-dom';
 
-const SearchBar = (props: { setSearchValue: React.Dispatch<React.SetStateAction<string>> }) => {
-  const { setSearchValue } = props;
+const SearchBar = (props: {
+  setSearchValue: React.Dispatch<
+    React.SetStateAction<{
+      searchValue: string | null;
+      loaded: boolean;
+    }>
+  >;
+  isLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const { setSearchValue, isLoading } = props;
 
   const storageInputValue: string = localStorage.getItem('inputValue') || '';
 
@@ -14,13 +22,19 @@ const SearchBar = (props: { setSearchValue: React.Dispatch<React.SetStateAction<
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      setSearchValue(searchBarRef.current);
+      setSearchValue({ searchValue: searchBarRef.current, loaded: true });
+      isLoading(true);
     }
   };
 
   useEffect(() => {
     searchBarRef.current = inputValue;
   }, [inputValue]);
+
+  useEffect(() => {
+    setSearchValue({ searchValue: searchBarRef.current, loaded: true });
+    isLoading(true);
+  }, []);
 
   useEffect(() => {
     return () => {

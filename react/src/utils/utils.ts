@@ -171,12 +171,14 @@ class Api {
     this.url = url;
   }
 
-  public async getCharacters(name: string | null): Promise<ICharacter[]> {
+  public async getCharacters(name: string): Promise<ICharacter[]> {
     const response: Response = await fetch(
-      !name ? `${this.url}/characters` : `${this.url}/characters/?name=${name}`
+      name === '' ? `${this.url}/characters` : `${this.url}/characters/?name=${name}`
     );
     return response.json();
   }
 }
 
-export { capitalizeFirstLetter, idGenerator, Validation, saveToLocalStore, Api };
+const generateArr = (length: number): number[] => [...Array(length)].map(() => 0);
+
+export { capitalizeFirstLetter, idGenerator, Validation, saveToLocalStore, Api, generateArr };

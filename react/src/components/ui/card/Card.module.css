@@ -3,7 +3,6 @@
   border: 30px solid;
   border-image: url('../../../assets/card-frame.svg');
   border-image-slice: 30;
-  margin-bottom: 5em;
   width: auto;
   background: #02d7f2;
   max-width: 460px;
