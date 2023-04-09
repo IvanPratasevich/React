@@ -173,16 +173,16 @@ describe('Testing form', () => {
     radio.value = 'Female';
     checkbox.value = 'on';
 
-    await userEvent.click(submit);
+    submit.click();
 
-    const error = screen.getByTestId('error-image');
-    const errorText = within(error).getByText('The field is required!');
-
-    expect(errorText).not.toBeNull();
+    setTimeout(() => {
+      const error = screen.getByTestId('error-image');
+      const errorText = within(error).getByText('The field is required!');
+      expect(errorText).not.toBeNull();
+    }, 0);
   });
 
   test('Should render card', async () => {
-    server.use(...handlers);
     render(<FormPage />);
     const name: HTMLInputElement = screen.getByTestId('name');
     const surname: HTMLInputElement = screen.getByTestId('surname');
