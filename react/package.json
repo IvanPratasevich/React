@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts --ext .tsx",
     "lint:fix": "eslint --fix . --ext .ts --ext .tsx",
     "format": "prettier --write .",
-    "test": "jest --watchAll=false --coverage --collectCoverageFrom=src/**/*.{ts,tsx}"
+    "test": "jest --watchAll=false --coverage --collectCoverageFrom=src/**/*.{ts,tsx} --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "@babel/core": "^7.21.3",

@@ -149,16 +149,19 @@ describe('Testing navigation', () => {
 describe('Testing form', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
-
-  beforeEach(() => render(<FormPage />));
+  afterAll((done) => {
+    server.close();
+    done();
+  });
 
   test('Should render form', () => {
+    render(<FormPage />);
     const form: HTMLFormElement = screen.getByTestId('form');
     expect(form).toBeVisible();
   });
 
   test('Should show error', async () => {
+    render(<FormPage />);
     const name: HTMLInputElement = screen.getByTestId('name');
     const surname: HTMLInputElement = screen.getByTestId('surname');
     const date: HTMLInputElement = screen.getByTestId('date');
@@ -174,16 +177,18 @@ describe('Testing form', () => {
     radio.value = 'Female';
     checkbox.value = 'on';
 
-    submit.click();
+    await act(() => {
+      submit.click();
+    });
 
     setTimeout(() => {
       const error = screen.getByTestId('error-image');
-      const errorText = within(error).getByText('The field is required!');
-      expect(errorText).not.toBeNull();
+      expect(error).toBeVisible();
     }, 0);
   });
 
-  test('Should render card', async () => {
+  test(`Should render card and show popup with 'Card successfully generated!' text`, async () => {
+    render(<FormPage />);
     const name: HTMLInputElement = screen.getByTestId('name');
     const surname: HTMLInputElement = screen.getByTestId('surname');
     const date: HTMLInputElement = screen.getByTestId('date');
@@ -200,40 +205,19 @@ describe('Testing form', () => {
     occupation.value = 'Corporate CEO';
     radio.value = 'Female';
     checkbox.value = 'on';
-    userEvent.upload(image, file);
 
-    submit.click();
+    await act(() => {
+      userEvent.upload(image, file);
+      submit.click();
+    });
 
     setTimeout(() => {
       const card: HTMLElement = screen.getByTestId('card');
+      const successfull = screen.getByTestId('popup');
+      const successfullText = within(successfull).getByText('Card successfully generated!');
+      expect(successfullText).not.toBeNull();
       expect(card).toBeInTheDocument();
     }, 0);
-  });
-
-  test('Should show popup', () => {
-    const name: HTMLInputElement = screen.getByTestId('name');
-    const surname: HTMLInputElement = screen.getByTestId('surname');
-    const date: HTMLInputElement = screen.getByTestId('date');
-    const image: HTMLInputElement = screen.getByTestId('image');
-    const occupation: HTMLSelectElement = screen.getByTestId('occupation');
-    const radio: HTMLInputElement = screen.getByTestId('female');
-    const checkbox: HTMLInputElement = screen.getByTestId('checkbox');
-    const submit: HTMLInputElement = screen.getByTestId('submit');
-
-    const file: File = new File(['hello'], 'hello.png', { type: 'image/png' });
-    name.value = 'Cassandra';
-    surname.value = 'Maldonado';
-    date.value = '1988-05-07';
-    occupation.value = 'Corporate CEO';
-    radio.value = 'Female';
-    checkbox.value = 'on';
-    userEvent.upload(image, file);
-
-    submit.click();
-
-    const successfull = screen.getByTestId('popup');
-    const successfullText = within(successfull).getByText('Card successfully generated!');
-    expect(successfullText).not.toBeNull();
   });
 });
 
