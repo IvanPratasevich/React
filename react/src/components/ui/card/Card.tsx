@@ -21,7 +21,7 @@ const Card = (props: ICardProps) => {
                 <div
                   className="cross"
                   onClick={() =>
-                    setStateModal({
+                    setStateModal!({
                       showModal: false,
                       card: null,
                     })
@@ -136,7 +136,7 @@ const Card = (props: ICardProps) => {
             <button
               className={`${styles.submit}`}
               type="submit"
-              onClick={() => setStateModal({ showModal: true, card: character })}
+              onClick={() => setStateModal!({ showModal: true, card: character })}
             >
               submit
             </button>

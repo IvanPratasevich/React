@@ -18,7 +18,7 @@ interface ICardProps {
   hiddenData: string[];
   preview: boolean;
   modalClassname: boolean;
-  setStateModal: React.Dispatch<
+  setStateModal?: React.Dispatch<
     React.SetStateAction<{
       showModal: boolean;
       card: ICharacter | null;
