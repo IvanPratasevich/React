@@ -8,6 +8,8 @@ import CardLoader from '../../ui/card-loader/CardLoader';
 import { v4 as uuidv4 } from 'uuid';
 
 import Error from '../../ui/error/Error';
+import { createPortal } from 'react-dom';
+import Modal from '../../ui/modal/Modal';
 
 const Home = () => {
   const [characters, setCharacters] = useState<ICharacter[]>([]);
@@ -20,6 +22,11 @@ const Home = () => {
   });
 
   const [error, setError] = useState<{ errorMessage: string }>({ errorMessage: '' });
+
+  const [stateModal, setStateModal] = useState<{ showModal: boolean; card: ICharacter | null }>({
+    showModal: false,
+    card: null,
+  });
 
   const api: Api = new Api();
 
@@ -41,36 +48,44 @@ const Home = () => {
   }, [searchState]);
 
   return (
-    <main className={styles.main}>
-      <>
-        <SearchBar setSearchValue={setSearchValue} isLoading={isLoading} />
-        {error.errorMessage ? (
-          <Error errorMessage={error.errorMessage} />
-        ) : loading ? (
-          <div className="container">
-            {generateArr(3).map(() => {
-              return <CardLoader key={uuidv4()} />;
-            })}
-          </div>
-        ) : (
-          <CardsList
-            previewMode={true}
-            page="Home"
-            cardsList={characters}
-            hiddenDataArr={[
-              'img',
-              'name',
-              'dateOfBirth',
-              'id',
-              'description',
-              'gender',
-              'occupation',
-              'age',
-            ]}
-          />
+    <>
+      <main className={styles.main}>
+        <>
+          <SearchBar setSearchValue={setSearchValue} isLoading={isLoading} />
+          {error.errorMessage ? (
+            <Error errorMessage={error.errorMessage} />
+          ) : loading ? (
+            <div className="container">
+              {generateArr(3).map(() => {
+                return <CardLoader key={uuidv4()} />;
+              })}
+            </div>
+          ) : (
+            <CardsList
+              previewMode={true}
+              page="Home"
+              cardsList={characters}
+              hiddenDataArr={[
+                'img',
+                'name',
+                'dateOfBirth',
+                'id',
+                'description',
+                'gender',
+                'occupation',
+                'age',
+              ]}
+              setStateModal={setStateModal}
+            />
+          )}
+        </>
+      </main>
+      {stateModal.showModal &&
+        createPortal(
+          <Modal stateModal={stateModal} setStateModal={setStateModal} />,
+          document.body
         )}
-      </>
-    </main>
+    </>
   );
 };
 

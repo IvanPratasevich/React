@@ -101,6 +101,7 @@ const Modal = (props: {
             character={cardToShow!}
             hiddenData={['img']}
             modalClassname={true}
+            setStateModal={setStateModal}
           />
         </div>
       )}
