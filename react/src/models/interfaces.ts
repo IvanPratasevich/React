@@ -200,6 +200,11 @@ interface IGiphyResponse {
   data: GIFObject;
 }
 
+interface IErrorResponse {
+  statusCode: number;
+  message: string;
+}
+
 export {
   ICharacter,
   ICardProps,
@@ -217,4 +222,5 @@ export {
   IFormState,
   IFields,
   IGiphyResponse,
+  IErrorResponse,
 };

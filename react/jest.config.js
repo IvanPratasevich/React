@@ -8,6 +8,7 @@ const customJestConfig = {
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   collectCoverage: true,
   collectCoverageFrom: ['src/'],
+  coveragePathIgnorePatterns: ['src/vite-env.d.ts', 'src/constants/constants.ts', 'src/main.tsx'],
 };
 
 export default customJestConfig;
