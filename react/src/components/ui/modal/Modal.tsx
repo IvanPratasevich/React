@@ -44,6 +44,7 @@ const Modal = (props: {
         <div className={styles.modalContainer}>
           <div
             className={`${styles.modal}`}
+            data-testid={`modal`}
             onClick={() =>
               setStateModal({
                 showModal: false,
@@ -70,7 +71,7 @@ const Modal = (props: {
         </div>
       ) : loading ? (
         <div className={styles.modalContainer}>
-          <div className={`${styles.modal}`}></div>
+          <div className={`${styles.modal}`} data-testid={`modal`}></div>
           <div
             style={{
               position: 'fixed',
@@ -87,6 +88,7 @@ const Modal = (props: {
         <div className={styles.modalContainer}>
           <div
             className={`${styles.modal}`}
+            data-testid={`modal`}
             onClick={() =>
               setStateModal({
                 showModal: false,

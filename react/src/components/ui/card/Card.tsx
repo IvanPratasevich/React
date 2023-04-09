@@ -100,7 +100,9 @@ const Card = (props: ICardProps) => {
               )}
             </span>
           </div>
-          <h2 className={styles.card__title}>{character.name}</h2>
+          <h2 className={styles.card__title} data-testid={`${character.name}`}>
+            {character.name}
+          </h2>
           <div
             className={`${styles.card__img}`}
             style={{
@@ -135,6 +137,7 @@ const Card = (props: ICardProps) => {
           {preview && (
             <button
               className={`${styles.submit}`}
+              data-testid={`submit-${character.id}`}
               type="submit"
               onClick={() => setStateModal!({ showModal: true, card: character })}
             >
