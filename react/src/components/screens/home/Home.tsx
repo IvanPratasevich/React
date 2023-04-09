@@ -48,7 +48,7 @@ const Home = () => {
           <Error errorMessage={error.errorMessage} />
         ) : loading ? (
           <div className="container">
-            {generateArr(6).map(() => {
+            {generateArr(3).map(() => {
               return <CardLoader key={uuidv4()} />;
             })}
           </div>
