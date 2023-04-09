@@ -32,18 +32,16 @@ const Home = () => {
 
   useEffect(() => {
     if (searchState.searchValue !== null && searchState.loaded) {
-      setTimeout(() => {
-        api
-          .getCharacters(searchState.searchValue!)
-          .then((data) => {
-            setError({ errorMessage: '' });
-            setCharacters(data as ICharacter[]);
-            isLoading(false);
-          })
-          .catch((err: Error) => {
-            setError({ errorMessage: err.message });
-          });
-      }, 5000);
+      api
+        .getCharacters(searchState.searchValue!)
+        .then((data) => {
+          setError({ errorMessage: '' });
+          setCharacters(data as ICharacter[]);
+          isLoading(false);
+        })
+        .catch((err: Error) => {
+          setError({ errorMessage: err.message });
+        });
     }
   }, [searchState]);
 

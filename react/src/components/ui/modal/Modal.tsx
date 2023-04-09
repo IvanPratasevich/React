@@ -22,20 +22,18 @@ const Modal = (props: {
   const [loading, isLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      const api: Api = new Api();
-      api
-        .getCharacterById(String(stateModal.card!.id))
-        .then((card) => {
-          setError({ errorMessage: '' });
-          setCardToShow(card as unknown as ICharacter);
-          isLoading(false);
-        })
-        .catch((err: Error) => {
-          setError({ errorMessage: err.message });
-          setCardToShow(null);
-        });
-    }, 5000);
+    const api: Api = new Api();
+    api
+      .getCharacterById(String(stateModal.card!.id))
+      .then((card) => {
+        setError({ errorMessage: '' });
+        setCardToShow(card as unknown as ICharacter);
+        isLoading(false);
+      })
+      .catch((err: Error) => {
+        setError({ errorMessage: err.message });
+        setCardToShow(null);
+      });
   }, []);
 
   return (
