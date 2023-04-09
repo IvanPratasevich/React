@@ -193,7 +193,7 @@ class Api {
 
   public async getGifs(name: string): Promise<IGiphyResponse | Error> {
     try {
-      const url = `https://api.giphy.com/v1/gifs/search?q=${name}&api_key=${apiKey}&q=${name}`;
+      const url = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${name}`;
       const response: Response = await fetch(url);
 
       if (response.ok) {

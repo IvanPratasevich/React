@@ -7,10 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 const Card = (props: ICardProps) => {
   const { character, hiddenData, preview } = props;
 
-  const handleModal = () => {
-    console.log(character);
-  };
-
   return (
     <div className={styles.card} style={{ borderImageOutset: '15px' }}>
       <div className={styles.card__container}>
@@ -45,7 +41,7 @@ const Card = (props: ICardProps) => {
           )}
         </ul>
         {preview && (
-          <button className={`${styles.submit}`} type="submit" onClick={handleModal}>
+          <button className={`${styles.submit}`} type="submit">
             submit
           </button>
         )}

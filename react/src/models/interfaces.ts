@@ -190,14 +190,7 @@ interface IFields {
 }
 
 interface IGiphyResponse {
-  pagination: { total_count: number; count: number; offset: number };
-  meta: {
-    status: number;
-    msg: string;
-    response_id: string;
-  };
-
-  data: GIFObject[];
+  data: GIFObject;
 }
 
 export {

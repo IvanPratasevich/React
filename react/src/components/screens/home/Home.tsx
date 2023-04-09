@@ -34,7 +34,6 @@ const Home = () => {
             isLoading(false);
           })
           .catch((err: Error) => {
-            console.log(err);
             setError({ errorMessage: err.message });
           });
       }, 5000);
