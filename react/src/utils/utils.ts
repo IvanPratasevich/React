@@ -209,6 +209,24 @@ class Api {
       }
     }
   }
+
+  public async getCharacterById(id: string): Promise<ICharacter[] | Error> {
+    try {
+      const response: Response = await fetch(`${this.url}/characters/id/${id}`);
+
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.statusText);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('Error');
+      }
+    }
+  }
 }
 
 const generateArr = (length: number): number[] => [...Array(length)].map(() => 0);

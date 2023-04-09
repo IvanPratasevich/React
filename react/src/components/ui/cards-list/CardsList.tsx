@@ -22,6 +22,7 @@ const CardsList = (props: {
           data-testid="card"
           character={character}
           hiddenData={hiddenDataArr}
+          modalClassname={false}
         />
       ))}
     </div>

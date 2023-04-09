@@ -17,6 +17,7 @@ interface ICardProps {
   key: string;
   hiddenData: string[];
   preview: boolean;
+  modalClassname: boolean;
 }
 
 interface IPathes {

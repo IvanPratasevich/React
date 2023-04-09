@@ -8,6 +8,19 @@
   max-width: 460px;
 }
 
+.modalCard {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.modalInformation {
+  max-height: 200px;
+  overflow: auto;
+}
+
 .card__decoration {
   display: flex;
   justify-content: space-between;
