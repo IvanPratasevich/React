@@ -5,19 +5,20 @@ import styles from './Card.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 const Card = (props: ICardProps) => {
-  const { character, hiddenData, preview, modalClassname, setStateModal } = props;
+  const { character, hiddenData, preview, modalMode, setStateModal } = props;
 
   return (
     <>
       <div
-        className={modalClassname ? `${styles.card} ${styles.modalCard}` : `${styles.card}`}
+        className={`${styles.card}`}
         style={{ borderImageOutset: '15px' }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.card__container}>
           <div className={preview ? styles.hidden : styles.card__decoration}>
             <span className={styles.card__arrow}></span>
             <span className={styles.card__date}>
-              {modalClassname ? (
+              {modalMode ? (
                 <div
                   className="cross"
                   onClick={() =>
@@ -113,7 +114,7 @@ const Card = (props: ICardProps) => {
           ></div>
           <ul
             className={
-              modalClassname
+              modalMode
                 ? `${styles.modalInformation} ${styles.card__information}`
                 : `${styles.card__information}`
             }

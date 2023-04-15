@@ -28,7 +28,7 @@ const CardsList = (props: {
           data-testid="card"
           character={character}
           hiddenData={hiddenDataArr}
-          modalClassname={false}
+          modalMode={false}
           setStateModal={setStateModal}
         />
       ))}

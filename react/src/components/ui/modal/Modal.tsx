@@ -39,68 +39,40 @@ const Modal = (props: {
   return (
     <>
       {error.errorMessage ? (
-        <div className={styles.modalContainer}>
-          <div
-            className={`${styles.modal}`}
-            data-testid={`modal`}
-            onClick={() =>
-              setStateModal({
-                showModal: false,
-                card: null,
-              })
-            }
-          ></div>
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: '10',
-              color: 'white',
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              gap: '10px',
-            }}
-          >
-            <Error errorMessage={error.errorMessage} />
-          </div>
+        <div
+          className={`${styles.modal}`}
+          data-testid={`modal`}
+          onClick={() =>
+            setStateModal({
+              showModal: false,
+              card: null,
+            })
+          }
+        >
+          <Error errorMessage={error.errorMessage} />
         </div>
       ) : loading ? (
-        <div className={styles.modalContainer}>
-          <div className={`${styles.modal}`} data-testid={`modal`}></div>
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: '10',
-            }}
-          >
-            <CardLoader />;
-          </div>
+        <div className={`${styles.modal}`} data-testid={`modal`}>
+          <CardLoader />;
         </div>
       ) : (
-        <div className={styles.modalContainer}>
-          <div
-            className={`${styles.modal}`}
-            data-testid={`modal`}
-            onClick={() =>
-              setStateModal({
-                showModal: false,
-                card: null,
-              })
-            }
-          ></div>
+        <div
+          className={`${styles.modal}`}
+          data-testid={`modal`}
+          onClick={() =>
+            setStateModal({
+              showModal: false,
+              card: null,
+            })
+          }
+        >
           <Card
             key={uuidv4()}
             preview={false}
             data-testid="modal-card"
             character={cardToShow!}
             hiddenData={['img']}
-            modalClassname={true}
+            modalMode={true}
             setStateModal={setStateModal}
           />
         </div>
