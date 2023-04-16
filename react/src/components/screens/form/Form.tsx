@@ -1,9 +1,12 @@
 import { Form } from '../../ui/form/Form';
 import React from 'react';
-import Main from '../../../structure/main/Main';
 
 const FormPage = () => {
-  return <Main components={[Form]} />;
+  return (
+    <main className="main">
+      <Form />
+    </main>
+  );
 };
 
 export default FormPage;

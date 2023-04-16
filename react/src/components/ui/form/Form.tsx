@@ -97,7 +97,7 @@ const Form = () => {
         </div>
       </form>
 
-      <CardsList page="Form" cardsList={state.cards} hiddenDataArr={['img']} />
+      <CardsList previewMode={false} page="Form" cardsList={state.cards} hiddenDataArr={['img']} />
     </>
   );
 };

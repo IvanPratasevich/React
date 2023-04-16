@@ -1,7 +1,4 @@
 import { IHtmlElements, IPathes } from '../models/interfaces';
-import { Validation } from '../utils/utils';
-
-const validator = new Validation();
 
 const Pathes: IPathes = {
   '/about-us': 'About us',
@@ -63,7 +60,18 @@ const htmlElements: IHtmlElements = {
     type: 'file',
     validation: {
       required: 'The field is required!',
-      validate: validator.validateImage,
+      validate: (fileList: FileList): string | boolean => {
+        if (fileList.length === 0) {
+          return 'Please attach your image!';
+        }
+
+        const [image] = fileList;
+        const { size, type } = image;
+
+        return size < 10 * 1000000 && type.includes('image/')
+          ? true
+          : 'Please check your size or type of your image!';
+      },
     },
   },
 
@@ -103,4 +111,8 @@ const htmlElements: IHtmlElements = {
   },
 };
 
-export { Pathes, initialState, htmlElements };
+const apiUrl = 'https://cyberpunk2077-api.vercel.app';
+
+const apiKey = 'fI25naItW6FnL3otm45EQkytQ6DTKhtf';
+
+export { Pathes, initialState, htmlElements, apiUrl, apiKey };

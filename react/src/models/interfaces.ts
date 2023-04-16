@@ -1,3 +1,5 @@
+import { GIFObject } from 'giphy-api';
+
 interface ICharacter {
   id?: number;
   name: string;
@@ -14,6 +16,14 @@ interface ICardProps {
   character: ICharacter;
   key: string;
   hiddenData: string[];
+  preview: boolean;
+  modalMode: boolean;
+  setStateModal?: React.Dispatch<
+    React.SetStateAction<{
+      showModal: boolean;
+      card: ICharacter | null;
+    }>
+  >;
 }
 
 interface IPathes {
@@ -186,6 +196,15 @@ interface IFields {
   submit: string;
 }
 
+interface IGiphyResponse {
+  data: GIFObject;
+}
+
+interface IErrorResponse {
+  statusCode: number;
+  message: string;
+}
+
 export {
   ICharacter,
   ICardProps,
@@ -202,4 +221,6 @@ export {
   IRadioElement,
   IFormState,
   IFields,
+  IGiphyResponse,
+  IErrorResponse,
 };
