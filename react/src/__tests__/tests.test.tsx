@@ -8,93 +8,18 @@ import Home from '../components/screens/home/Home';
 import React from 'react';
 import { Routes, Route, MemoryRouter } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { Api, capitalizeFirstLetter } from '../utils/utils';
 import Header from '../structure/header/Header';
 import FormPage from '../components/screens/form/Form';
 import { server } from '../mocks/server';
-import { character, characters } from '../mocks/characters';
-import { errorHandlers } from '../mocks/handlers';
-import gif from '../mocks/gif';
+import { character } from '../mocks/characters';
 import App from '../structure/app/App';
 import Modal from '../components/ui/modal/Modal';
-
-describe('Testing utils', () => {
-  beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
-
-  test('Should capitalize first letter', () => {
-    expect(capitalizeFirstLetter('test')).toBe('Test');
-    expect(capitalizeFirstLetter('cat')).toBe('Cat');
-    expect(capitalizeFirstLetter('dOG')).toBe('DOG');
-  });
-
-  test('Should capitalize first letter', () => {
-    expect(capitalizeFirstLetter('test')).toBe('Test');
-    expect(capitalizeFirstLetter('cat')).toBe('Cat');
-    expect(capitalizeFirstLetter('dOG')).toBe('DOG');
-  });
-
-  test('Should return all characters', async () => {
-    const api = new Api();
-
-    const response = await api.getCharacters('');
-
-    expect(response).toEqual(characters);
-  });
-
-  test('Should return character by id', async () => {
-    const api = new Api();
-
-    const response = await api.getCharacterById('2');
-
-    expect(response).toEqual(character);
-  });
-
-  test('Should return server error (request by id)', async () => {
-    try {
-      server.use(...errorHandlers);
-      const api = new Api();
-      await api.getCharacterById('2');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        expect(error.message).toEqual('Internal Server Error');
-      }
-    }
-  });
-
-  test('Should return server error', async () => {
-    try {
-      server.use(...errorHandlers);
-      const api = new Api();
-      await api.getCharacters('');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        expect(error.message).toEqual('Internal Server Error');
-      }
-    }
-  });
-
-  test('Should return gif', async () => {
-    const api = new Api();
-
-    const response = await api.getGifs('cyberpunk2077');
-
-    expect(response).toEqual(gif);
-  });
-
-  test('Should return server (giphy) error', async () => {
-    try {
-      server.use(...errorHandlers);
-      const api = new Api();
-      await api.getGifs('cyberpunk2077');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        expect(error.message).toEqual('Internal Server Error');
-      }
-    }
-  });
-});
+import { Provider } from 'react-redux';
+import store from '../store';
+import { setModal } from '../store/homeSlice';
+import homeReducer from '../store/homeSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import { cyberpunkApi } from '../store/cyberpunkApi';
 
 describe('Testing App component', () => {
   beforeAll(() => server.listen());
@@ -103,11 +28,39 @@ describe('Testing App component', () => {
 
   test('Should show header', () => {
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
     expect(screen.getByTestId('header')).toBeInTheDocument();
+  });
+});
+
+describe('Testing pages rendering', () => {
+  test('Should render 404 page', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <NotFound />
+        </MemoryRouter>
+      </Provider>
+    );
+    const notFound: HTMLElement = screen.getByTestId('404');
+    expect(notFound).toBeVisible();
+  });
+
+  test('Should render About Us page', () => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <AboutUs />
+        </MemoryRouter>
+      </Provider>
+    );
+    const aboutUs: HTMLElement = screen.getByTestId('about-us-header');
+    expect(aboutUs).toBeVisible();
   });
 });
 
@@ -118,7 +71,7 @@ describe('Testing navigation', () => {
 
   beforeEach(() => {
     render(
-      <React.StrictMode>
+      <Provider store={store}>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -127,7 +80,7 @@ describe('Testing navigation', () => {
             <Route path="/about-us" element={<AboutUs />} />
           </Routes>
         </BrowserRouter>
-      </React.StrictMode>
+      </Provider>
     );
   });
 
@@ -155,13 +108,21 @@ describe('Testing form', () => {
   });
 
   test('Should render form', () => {
-    render(<FormPage />);
+    render(
+      <Provider store={store}>
+        <FormPage />{' '}
+      </Provider>
+    );
     const form: HTMLFormElement = screen.getByTestId('form');
     expect(form).toBeVisible();
   });
 
   test('Should show error', async () => {
-    render(<FormPage />);
+    render(
+      <Provider store={store}>
+        <FormPage />{' '}
+      </Provider>
+    );
     const name: HTMLInputElement = screen.getByTestId('name');
     const surname: HTMLInputElement = screen.getByTestId('surname');
     const date: HTMLInputElement = screen.getByTestId('date');
@@ -188,7 +149,11 @@ describe('Testing form', () => {
   });
 
   test(`Should render card and show popup with 'Card successfully generated!' text`, async () => {
-    render(<FormPage />);
+    render(
+      <Provider store={store}>
+        <FormPage />{' '}
+      </Provider>
+    );
     const name: HTMLInputElement = screen.getByTestId('name');
     const surname: HTMLInputElement = screen.getByTestId('surname');
     const date: HTMLInputElement = screen.getByTestId('date');
@@ -228,14 +193,14 @@ describe('Testing Home', () => {
 
   test('Should render card in Home', async () => {
     render(
-      <React.StrictMode>
+      <Provider store={store}>
         <BrowserRouter>
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>
         </BrowserRouter>
-      </React.StrictMode>
+      </Provider>
     );
 
     setTimeout(() => {
@@ -245,10 +210,26 @@ describe('Testing Home', () => {
   });
 
   test('Should show character modal', async () => {
-    const setStateModal = jest.fn();
+    const mockStore = configureStore({
+      reducer: {
+        home: homeReducer,
+        [cyberpunkApi.reducerPath]: cyberpunkApi.reducer,
+      },
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cyberpunkApi.middleware),
+    });
+
+    mockStore.dispatch(
+      setModal({
+        showModal: false,
+        card: character,
+        loading: false,
+      })
+    );
 
     render(
-      <Modal stateModal={{ showModal: true, card: character }} setStateModal={setStateModal} />
+      <Provider store={mockStore}>
+        <Modal />
+      </Provider>
     );
 
     setTimeout(() => {
