@@ -205,6 +205,41 @@ interface IErrorResponse {
   message: string;
 }
 
+interface IHomeState {
+  search: {
+    searchValue: string;
+    loaded: boolean;
+  };
+  loading: boolean;
+  characters: ICharacter[];
+  error: {
+    errorMessage: string;
+  };
+  modal: {
+    showModal: boolean;
+    card: ICharacter | null;
+    loading: boolean;
+  };
+}
+
+interface ISetHomeAction {
+  searchValue?: string;
+  loaded?: boolean;
+  loading?: boolean;
+  characters?: ICharacter[];
+  errorMessage?: string;
+  showModal?: boolean;
+  card?: ICharacter | null;
+}
+
+interface FormState {
+  cards: ICharacter[];
+}
+
+interface SetCardsAction {
+  card: ICharacter;
+}
+
 export {
   ICharacter,
   ICardProps,
@@ -223,4 +258,8 @@ export {
   IFields,
   IGiphyResponse,
   IErrorResponse,
+  IHomeState,
+  ISetHomeAction,
+  FormState,
+  SetCardsAction,
 };

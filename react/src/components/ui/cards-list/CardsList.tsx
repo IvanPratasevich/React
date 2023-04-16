@@ -9,14 +9,8 @@ const CardsList = (props: {
   cardsList: ICharacter[];
   hiddenDataArr: string[];
   previewMode: boolean;
-  setStateModal?: React.Dispatch<
-    React.SetStateAction<{
-      showModal: boolean;
-      card: ICharacter | null;
-    }>
-  >;
 }) => {
-  const { cardsList, hiddenDataArr, previewMode, setStateModal } = props;
+  const { cardsList, hiddenDataArr, previewMode } = props;
   const characters = cardsList;
 
   return characters.length > 0 ? (
@@ -29,7 +23,6 @@ const CardsList = (props: {
           character={character}
           hiddenData={hiddenDataArr}
           modalMode={false}
-          setStateModal={setStateModal}
         />
       ))}
     </div>

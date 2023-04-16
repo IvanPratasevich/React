@@ -6,33 +6,28 @@ import { v4 as uuidv4 } from 'uuid';
 import { Api } from '../../../utils/utils';
 import Error from '../error/Error';
 import CardLoader from '../card-loader/CardLoader';
+import { setModal } from '../../../store/homeSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
-const Modal = (props: {
-  stateModal: { showModal: boolean; card: ICharacter | null };
-  setStateModal: React.Dispatch<
-    React.SetStateAction<{
-      showModal: boolean;
-      card: ICharacter | null;
-    }>
-  >;
-}) => {
-  const { stateModal, setStateModal } = props;
-  const [cardToShow, setCardToShow] = useState<ICharacter | null>(null);
+const Modal = () => {
+  const dispatch = useAppDispatch();
+
   const [error, setError] = useState<{ errorMessage: string }>({ errorMessage: '' });
-  const [loading, isLoading] = useState<boolean>(true);
+
+  const modal = useAppSelector((state) => state.home.modal);
 
   useEffect(() => {
     const api: Api = new Api();
     api
-      .getCharacterById(String(stateModal.card!.id))
+      .getCharacterById(String(modal.card!.id))
       .then((card) => {
         setError({ errorMessage: '' });
-        setCardToShow(card as unknown as ICharacter);
-        isLoading(false);
+        dispatch(
+          setModal({ showModal: true, card: card as unknown as ICharacter, loading: false })
+        );
       })
       .catch((err: Error) => {
         setError({ errorMessage: err.message });
-        setCardToShow(null);
       });
   }, []);
 
@@ -43,15 +38,18 @@ const Modal = (props: {
           className={`${styles.modal}`}
           data-testid={`modal`}
           onClick={() =>
-            setStateModal({
-              showModal: false,
-              card: null,
-            })
+            dispatch(
+              setModal({
+                showModal: false,
+                card: null,
+                loading: false,
+              })
+            )
           }
         >
           <Error errorMessage={error.errorMessage} />
         </div>
-      ) : loading ? (
+      ) : modal.loading ? (
         <div className={`${styles.modal}`} data-testid={`modal`}>
           <CardLoader />;
         </div>
@@ -60,20 +58,22 @@ const Modal = (props: {
           className={`${styles.modal}`}
           data-testid={`modal`}
           onClick={() =>
-            setStateModal({
-              showModal: false,
-              card: null,
-            })
+            dispatch(
+              setModal({
+                showModal: false,
+                card: null,
+                loading: false,
+              })
+            )
           }
         >
           <Card
             key={uuidv4()}
             preview={false}
             data-testid="modal-card"
-            character={cardToShow!}
+            character={modal.card!}
             hiddenData={['img']}
             modalMode={true}
-            setStateModal={setStateModal}
           />
         </div>
       )}

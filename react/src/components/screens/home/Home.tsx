@@ -1,55 +1,52 @@
 import CardsList from '../../ui/cards-list/CardsList';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styles from './Home.module.css';
 import SearchBar from '../../ui/search-bar/SearchBar';
 import { Api, generateArr } from '../../../utils/utils';
-import { ICharacter } from 'models/interfaces';
 import CardLoader from '../../ui/card-loader/CardLoader';
 import { v4 as uuidv4 } from 'uuid';
-
 import Error from '../../ui/error/Error';
 import { createPortal } from 'react-dom';
 import Modal from '../../ui/modal/Modal';
+import { setCharacters, setError, setLoading } from '../../../store/homeSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { ICharacter } from '../../../models/interfaces';
 
 const Home = () => {
-  const [characters, setCharacters] = useState<ICharacter[]>([]);
+  const dispatch = useAppDispatch();
 
-  const [loading, isLoading] = useState<boolean>(true);
+  const searchState = useAppSelector((state) => state.home.search);
 
-  const [searchState, setSearchValue] = useState<{ searchValue: null | string; loaded: boolean }>({
-    searchValue: null,
-    loaded: false,
-  });
+  const characters = useAppSelector((state) => state.home.characters);
 
-  const [error, setError] = useState<{ errorMessage: string }>({ errorMessage: '' });
+  const loading = useAppSelector((state) => state.home.loading);
 
-  const [stateModal, setStateModal] = useState<{ showModal: boolean; card: ICharacter | null }>({
-    showModal: false,
-    card: null,
-  });
+  const error = useAppSelector((state) => state.home.error);
+
+  const modal = useAppSelector((state) => state.home.modal);
 
   const api: Api = new Api();
 
   useEffect(() => {
-    if (searchState.searchValue !== null && searchState.loaded) {
+    setTimeout(() => {
       api
         .getCharacters(searchState.searchValue!)
         .then((data) => {
-          setError({ errorMessage: '' });
-          setCharacters(data as ICharacter[]);
-          isLoading(false);
+          dispatch(setError({ errorMessage: '' }));
+          dispatch(setCharacters({ characters: data as ICharacter[] }));
+          dispatch(setLoading({ loading: false }));
         })
         .catch((err: Error) => {
-          setError({ errorMessage: err.message });
+          dispatch(setError({ errorMessage: err.message }));
         });
-    }
+    }, 2000);
   }, [searchState]);
 
   return (
     <>
       <main className={styles.main}>
         <>
-          <SearchBar setSearchValue={setSearchValue} isLoading={isLoading} />
+          <SearchBar />
           {error.errorMessage ? (
             <Error errorMessage={error.errorMessage} />
           ) : loading ? (
@@ -73,16 +70,11 @@ const Home = () => {
                 'occupation',
                 'age',
               ]}
-              setStateModal={setStateModal}
             />
           )}
         </>
       </main>
-      {stateModal.showModal &&
-        createPortal(
-          <Modal stateModal={stateModal} setStateModal={setStateModal} />,
-          document.body
-        )}
+      {modal.showModal && createPortal(<Modal />, document.body)}
     </>
   );
 };

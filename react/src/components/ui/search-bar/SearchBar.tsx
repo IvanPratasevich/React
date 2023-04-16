@@ -1,52 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import styles from './SearchBar.module.css';
-import { saveToLocalStore } from '../../../utils/utils';
-import { useBeforeUnload } from 'react-router-dom';
+import { setLoading, setSearch } from '../../../store/homeSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
-const SearchBar = (props: {
-  setSearchValue: React.Dispatch<
-    React.SetStateAction<{
-      searchValue: string | null;
-      loaded: boolean;
-    }>
-  >;
-  isLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { setSearchValue, isLoading } = props;
-
-  const storageInputValue: string = localStorage.getItem('inputValue') || '';
-
-  const [inputValue, setInputValue] = useState(storageInputValue);
-
-  const searchBarRef = useRef<string>(inputValue);
+const SearchBar = () => {
+  const searchValue = useAppSelector((state) => state.home.search.searchValue);
+  const dispatch = useAppDispatch();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      setSearchValue({ searchValue: searchBarRef.current, loaded: true });
-      isLoading(true);
+      dispatch(setSearch({ searchValue: event.currentTarget.value, loaded: true }));
+      dispatch(setLoading({ loading: true }));
     }
   };
-
-  useEffect(() => {
-    searchBarRef.current = inputValue;
-  }, [inputValue]);
-
-  useEffect(() => {
-    setSearchValue({ searchValue: searchBarRef.current, loaded: true });
-    isLoading(true);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      saveToLocalStore(searchBarRef.current);
-    };
-  });
-
-  useBeforeUnload(
-    useCallback(() => {
-      saveToLocalStore(searchBarRef.current);
-    }, [])
-  );
 
   return (
     <input
@@ -55,8 +21,7 @@ const SearchBar = (props: {
       autoComplete="off"
       className={styles.searchbar}
       type="search"
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
-      value={inputValue}
+      defaultValue={searchValue}
       onKeyDown={handleKeyDown}
     ></input>
   );

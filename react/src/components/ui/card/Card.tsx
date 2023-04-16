@@ -3,9 +3,13 @@ import React from 'react';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import styles from './Card.module.css';
 import { v4 as uuidv4 } from 'uuid';
+import { setModal } from '../../../store/homeSlice';
+import { useAppDispatch } from '../../../store/hooks';
 
 const Card = (props: ICardProps) => {
-  const { character, hiddenData, preview, modalMode, setStateModal } = props;
+  const { character, hiddenData, preview, modalMode } = props;
+
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -22,10 +26,13 @@ const Card = (props: ICardProps) => {
                 <div
                   className="cross"
                   onClick={() =>
-                    setStateModal!({
-                      showModal: false,
-                      card: null,
-                    })
+                    dispatch(
+                      setModal({
+                        showModal: false,
+                        card: null,
+                        loading: false,
+                      })
+                    )
                   }
                   style={{
                     cursor: 'pointer',
@@ -140,7 +147,9 @@ const Card = (props: ICardProps) => {
               className={`${styles.submit}`}
               data-testid={`submit-${character.id}`}
               type="submit"
-              onClick={() => setStateModal!({ showModal: true, card: character })}
+              onClick={() =>
+                dispatch(setModal({ showModal: true, card: character, loading: true }))
+              }
             >
               submit
             </button>

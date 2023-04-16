@@ -10,6 +10,8 @@ import CustomInput from '../custom-input/CustomInput';
 import CustomSelect from '../custom-select/CustomSelect';
 import CustomRadio from '../custom-radio/CustomRadio';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { setCards } from '../../../store/formSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 const Form = () => {
   const {
@@ -22,6 +24,10 @@ const Form = () => {
     reValidateMode: 'onSubmit',
   });
 
+  const dispatch = useAppDispatch();
+
+  const cards = useAppSelector((state) => state.form.cards);
+
   const [state, setState] = useState<IFormState>(initialState);
 
   const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues) => {
@@ -30,6 +36,8 @@ const Form = () => {
     const updateState = { ...state, showPopup: true, cards: [...state.cards, card] };
 
     setState(updateState);
+
+    dispatch(setCards({ card }));
 
     eventsAfterSubmit();
   };
@@ -97,7 +105,7 @@ const Form = () => {
         </div>
       </form>
 
-      <CardsList previewMode={false} page="Form" cardsList={state.cards} hiddenDataArr={['img']} />
+      <CardsList previewMode={false} page="Form" cardsList={cards} hiddenDataArr={['img']} />
     </>
   );
 };
