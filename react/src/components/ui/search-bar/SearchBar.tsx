@@ -8,7 +8,7 @@ const SearchBar = () => {
   const dispatch = useAppDispatch();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && searchValue !== event.currentTarget.value) {
       dispatch(setSearch({ searchValue: event.currentTarget.value, loaded: true }));
       dispatch(setLoading({ loading: true }));
     }

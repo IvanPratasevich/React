@@ -2,7 +2,7 @@ import CardsList from '../../ui/cards-list/CardsList';
 import React, { useEffect } from 'react';
 import styles from './Home.module.css';
 import SearchBar from '../../ui/search-bar/SearchBar';
-import { Api, generateArr } from '../../../utils/utils';
+import { generateArr } from '../../../utils/utils';
 import CardLoader from '../../ui/card-loader/CardLoader';
 import { v4 as uuidv4 } from 'uuid';
 import Error from '../../ui/error/Error';
@@ -11,36 +11,38 @@ import Modal from '../../ui/modal/Modal';
 import { setCharacters, setError, setLoading } from '../../../store/homeSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { ICharacter } from '../../../models/interfaces';
+import { useGetCharactersQuery } from '../../../store/cyberpunkApi';
 
 const Home = () => {
   const dispatch = useAppDispatch();
 
   const searchState = useAppSelector((state) => state.home.search);
 
-  const characters = useAppSelector((state) => state.home.characters);
+  const { data, error: queryError, isSuccess } = useGetCharactersQuery(searchState.searchValue);
 
-  const loading = useAppSelector((state) => state.home.loading);
+  const characters = useAppSelector((state) => state.home.characters);
 
   const error = useAppSelector((state) => state.home.error);
 
+  const loading = useAppSelector((state) => state.home.loading);
+
   const modal = useAppSelector((state) => state.home.modal);
 
-  const api: Api = new Api();
-
   useEffect(() => {
-    setTimeout(() => {
-      api
-        .getCharacters(searchState.searchValue!)
-        .then((data) => {
-          dispatch(setError({ errorMessage: '' }));
-          dispatch(setCharacters({ characters: data as ICharacter[] }));
-          dispatch(setLoading({ loading: false }));
-        })
-        .catch((err: Error) => {
-          dispatch(setError({ errorMessage: err.message }));
-        });
-    }, 2000);
-  }, [searchState]);
+    if (queryError) {
+      if ('status' in queryError) {
+        dispatch(setError({ errorMessage: JSON.stringify(queryError.data) }));
+      } else {
+        dispatch(setError({ errorMessage: 'Error!' }));
+      }
+    }
+
+    if (isSuccess) {
+      dispatch(setError({ errorMessage: '' }));
+      dispatch(setCharacters({ characters: data as ICharacter[] }));
+      dispatch(setLoading({ loading: false }));
+    }
+  }, [data, queryError]);
 
   return (
     <>

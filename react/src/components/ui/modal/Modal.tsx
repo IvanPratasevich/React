@@ -3,11 +3,11 @@ import { ICharacter } from '../../../models/interfaces';
 import styles from './Modal.module.css';
 import Card from '../card/Card';
 import { v4 as uuidv4 } from 'uuid';
-import { Api } from '../../../utils/utils';
 import Error from '../error/Error';
 import CardLoader from '../card-loader/CardLoader';
 import { setModal } from '../../../store/homeSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useGetCharacterByIdQuery } from '../../../store/cyberpunkApi';
 
 const Modal = () => {
   const dispatch = useAppDispatch();
@@ -16,20 +16,26 @@ const Modal = () => {
 
   const modal = useAppSelector((state) => state.home.modal);
 
+  const {
+    data: card,
+    error: queryError,
+    isSuccess,
+  } = useGetCharacterByIdQuery(String(modal.card!.id));
+
   useEffect(() => {
-    const api: Api = new Api();
-    api
-      .getCharacterById(String(modal.card!.id))
-      .then((card) => {
-        setError({ errorMessage: '' });
-        dispatch(
-          setModal({ showModal: true, card: card as unknown as ICharacter, loading: false })
-        );
-      })
-      .catch((err: Error) => {
-        setError({ errorMessage: err.message });
-      });
-  }, []);
+    if (queryError) {
+      if ('status' in queryError) {
+        setError({ errorMessage: JSON.stringify(queryError.data) });
+      } else {
+        setError({ errorMessage: 'Error!' });
+      }
+    }
+
+    if (isSuccess) {
+      setError({ errorMessage: '' });
+      dispatch(setModal({ showModal: true, card: card as unknown as ICharacter, loading: false }));
+    }
+  }, [card, isSuccess, queryError]);
 
   return (
     <>
