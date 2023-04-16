@@ -3,38 +3,39 @@ import { ICharacter } from '../../../models/interfaces';
 import styles from './Modal.module.css';
 import Card from '../card/Card';
 import { v4 as uuidv4 } from 'uuid';
-import { Api } from '../../../utils/utils';
 import Error from '../error/Error';
 import CardLoader from '../card-loader/CardLoader';
+import { setModal } from '../../../store/homeSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useGetCharacterByIdQuery } from '../../../store/cyberpunkApi';
 
-const Modal = (props: {
-  stateModal: { showModal: boolean; card: ICharacter | null };
-  setStateModal: React.Dispatch<
-    React.SetStateAction<{
-      showModal: boolean;
-      card: ICharacter | null;
-    }>
-  >;
-}) => {
-  const { stateModal, setStateModal } = props;
-  const [cardToShow, setCardToShow] = useState<ICharacter | null>(null);
+const Modal = () => {
+  const dispatch = useAppDispatch();
+
   const [error, setError] = useState<{ errorMessage: string }>({ errorMessage: '' });
-  const [loading, isLoading] = useState<boolean>(true);
+
+  const modal = useAppSelector((state) => state.home.modal);
+
+  const {
+    data: card,
+    error: queryError,
+    isSuccess,
+  } = useGetCharacterByIdQuery(String(modal.card!.id));
 
   useEffect(() => {
-    const api: Api = new Api();
-    api
-      .getCharacterById(String(stateModal.card!.id))
-      .then((card) => {
-        setError({ errorMessage: '' });
-        setCardToShow(card as unknown as ICharacter);
-        isLoading(false);
-      })
-      .catch((err: Error) => {
-        setError({ errorMessage: err.message });
-        setCardToShow(null);
-      });
-  }, []);
+    if (queryError) {
+      if ('status' in queryError) {
+        setError({ errorMessage: JSON.stringify(queryError.data) });
+      } else {
+        setError({ errorMessage: 'Error!' });
+      }
+    }
+
+    if (isSuccess) {
+      setError({ errorMessage: '' });
+      dispatch(setModal({ showModal: true, card: card as unknown as ICharacter, loading: false }));
+    }
+  }, [card, isSuccess, queryError]);
 
   return (
     <>
@@ -43,15 +44,18 @@ const Modal = (props: {
           className={`${styles.modal}`}
           data-testid={`modal`}
           onClick={() =>
-            setStateModal({
-              showModal: false,
-              card: null,
-            })
+            dispatch(
+              setModal({
+                showModal: false,
+                card: null,
+                loading: false,
+              })
+            )
           }
         >
           <Error errorMessage={error.errorMessage} />
         </div>
-      ) : loading ? (
+      ) : modal.loading ? (
         <div className={`${styles.modal}`} data-testid={`modal`}>
           <CardLoader />;
         </div>
@@ -60,20 +64,22 @@ const Modal = (props: {
           className={`${styles.modal}`}
           data-testid={`modal`}
           onClick={() =>
-            setStateModal({
-              showModal: false,
-              card: null,
-            })
+            dispatch(
+              setModal({
+                showModal: false,
+                card: null,
+                loading: false,
+              })
+            )
           }
         >
           <Card
             key={uuidv4()}
             preview={false}
             data-testid="modal-card"
-            character={cardToShow!}
+            character={modal.card!}
             hiddenData={['img']}
             modalMode={true}
-            setStateModal={setStateModal}
           />
         </div>
       )}

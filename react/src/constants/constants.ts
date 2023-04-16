@@ -111,7 +111,7 @@ const htmlElements: IHtmlElements = {
   },
 };
 
-const apiUrl = 'https://cyberpunk2077-api.vercel.app';
+const apiUrl = 'https://cyberpunk2077-api.vercel.app/';
 
 const apiKey = 'fI25naItW6FnL3otm45EQkytQ6DTKhtf';
 
