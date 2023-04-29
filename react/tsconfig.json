@@ -15,5 +15,8 @@
     "baseUrl": "./src",
     "resolveJsonModule": true
   },
+  "ts-node": {
+    "esm": true,
+  },
   "include": ["./src/**/*", "styled.d.ts", "jest", "@types/jest-dom"]
 }
