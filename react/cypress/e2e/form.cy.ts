@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
-describe('Should render Form', () => {
+describe('Testing Form', () => {
   it('should visit form', () => {
     cy.visit('/form');
+    cy.get('[data-testid="form"]').should('be.visible');
   });
 });
