@@ -14,8 +14,8 @@
     "test": "jest --watchAll=false --coverage  --collectCoverageFrom=src/**/*.{ts,tsx} --detectOpenHandles --forceExit",
     "test:e2e:terminal": "start-server-and-test start:ssr:dev http-get://localhost:3333 cy:e2e:terminal",
     "test:e2e:browser": "start-server-and-test start:ssr:dev http-get://localhost:3333 cy:e2e:browser",
-    "cy:e2e:terminal": "npx cypress run --e2e --browser chrome  && npx nyc report --reporter=text-summary",
-    "cy:e2e:browser": "npx cypress open --e2e --browser chrome  && npx nyc report --reporter=text-summary"
+    "cy:e2e:terminal": "npx cypress run --e2e && npx nyc report --reporter=text-summary",
+    "cy:e2e:browser": "npx cypress open --e2e --browser chrome && npx nyc report --reporter=text-summary"
   },
   "dependencies": {
     "@babel/core": "^7.21.3",
