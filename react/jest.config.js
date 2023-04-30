@@ -15,6 +15,9 @@ const customJestConfig = {
     'src/store/homeSlice.ts',
     'src/store/formSlice.ts',
     'src/mocks/handlers.ts',
+    'src/server.ts',
+    'src/entry-client.tsx',
+    'src/entry-server.tsx',
   ],
 };
 
