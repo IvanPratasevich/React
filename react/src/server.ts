@@ -4,10 +4,11 @@ import { fileURLToPath } from 'url';
 import { readFile } from 'fs/promises';
 import path from 'node:path';
 import 'whatwg-fetch';
+import 'dotenv/config';
 
 async function createServer() {
   try {
-    const PORT = 3333;
+    const PORT = process.env.PORT || 3333;
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
     const app: Application = express();
